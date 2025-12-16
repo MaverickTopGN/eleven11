@@ -4,33 +4,80 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Marcadores — Pro TV</title>
+
+<!-- ✅ Tipografía premium (Inter) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --bg:#06110b; --bg2:#0a1a11; --txt:#eafff2; --muted:#a8c7b7;
   --line:rgba(255,255,255,.10); --live:#60a5fa; --good:#34d399; --ns:#a7f3d0;
   --shadow:0 18px 60px rgba(0,0,0,.45); --radius:18px;
+  --soft: rgba(255,255,255,.06);
+  --soft2: rgba(0,0,0,.12);
 }
+
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0; color:var(--txt);
-  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  letter-spacing: -0.01em;
   background:
-    radial-gradient(900px 520px at 18% -10%, rgba(34,197,94,.22), transparent 60%),
-    radial-gradient(900px 520px at 80% -10%, rgba(96,165,250,.14), transparent 60%),
+    radial-gradient(900px 520px at 18% -10%, rgba(34,197,94,.20), transparent 60%),
+    radial-gradient(900px 520px at 80% -10%, rgba(96,165,250,.12), transparent 60%),
     linear-gradient(180deg,var(--bg),var(--bg2));
 }
+
 .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 60px}
-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+
+header{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
+  margin-bottom:14px;flex-wrap:wrap
+}
 .brand{display:flex;gap:12px;align-items:center}
-.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#22c55e,#60a5fa);border:1px solid rgba(255,255,255,.10)}
+.logo{
+  width:44px;height:44px;border-radius:16px;
+  background:linear-gradient(135deg,#22c55e,#60a5fa);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow: 0 14px 40px rgba(0,0,0,.25);
+}
+.brandTitle{
+  display:flex;flex-direction:column;gap:2px;
+}
+.brandTitle .h{
+  font-weight:900;
+  font-size:16px;          /* ✅ más contenido */
+  line-height:1.15;
+}
+.brandTitle .p{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:600;
+  line-height:1.2;
+}
+
 .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 
 .btn{
-  cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);
-  border-radius:999px;padding:10px 12px;font-weight:900;box-shadow:0 10px 28px rgba(0,0,0,.20);
+  cursor:pointer;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.04);
+  color:var(--txt);
+  border-radius:999px;
+  padding:9px 12px;        /* ✅ menos alto */
+  font-weight:800;
+  font-size:13px;          /* ✅ más UX */
+  box-shadow:0 10px 28px rgba(0,0,0,.18);
+  transition: transform .08s ease, border-color .15s ease, background .15s ease;
 }
+.btn:hover{border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.05)}
+.btn:active{transform: translateY(1px)}
 .btn.primary{border-color:rgba(167,243,208,.35);background:rgba(167,243,208,.10)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
+
 .select{
   appearance:none;
   padding-right:34px;
@@ -40,30 +87,80 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
   background-size: 6px 6px, 6px 6px;
   background-repeat:no-repeat;
 }
+
 .pill{
-  display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.04);
-  border:1px solid var(--line);padding:10px 12px;border-radius:999px;
+  display:flex;gap:10px;align-items:center;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--line);
+  padding:9px 12px;
+  border-radius:999px;
 }
-.pill input{background:transparent;border:0;outline:0;color:var(--txt);width:min(260px,52vw);font-weight:800}
+.pill span{opacity:.9}
+.pill input{
+  background:transparent;border:0;outline:0;color:var(--txt);
+  width:min(260px,52vw);
+  font-weight:700;
+  font-size:13px;
+}
+
+.legend{
+  display:flex;gap:12px;flex-wrap:wrap;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  width:100%;
+  margin-top:10px
+}
+.dot{display:inline-block;width:9px;height:9px;border-radius:999px;margin-right:6px}
+.dot.past{background:rgba(255,255,255,.35)}
+.dot.current{background:rgba(52,211,153,.78)}
+.dot.future{background:rgba(96,165,250,.75)}
 
 .tabs{
-  display:flex;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--line);
-  border-radius:var(--radius);padding:10px;margin:14px 0;box-shadow:var(--shadow);
+  display:flex;gap:10px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:10px;
+  margin:14px 0;
+  box-shadow:var(--shadow);
   overflow:auto;
 }
 .tab{
-  padding:10px 12px;border-radius:999px;color:var(--muted);font-weight:950;cursor:pointer;
-  border:1px solid transparent; background:transparent; white-space:nowrap;
+  padding:10px 12px;
+  border-radius:999px;
+  color:var(--muted);
+  font-weight:900;
+  font-size:13px;
+  cursor:pointer;
+  border:1px solid transparent;
+  background:transparent;
+  white-space:nowrap;
 }
-.tab[aria-selected="true"]{color:var(--txt);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.tab[aria-selected="true"]{
+  color:var(--txt);
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.12)
+}
 
 .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
 @media(max-width:920px){.grid{grid-template-columns:1fr}}
+
 .panel{
-  background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);
-  padding:14px;box-shadow:var(--shadow)
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:14px;
+  box-shadow:var(--shadow)
 }
-.panel h2{margin:0 0 10px;color:var(--muted);font-size:14px;text-transform:uppercase;letter-spacing:.3px}
+.panel h2{
+  margin:0 0 10px;
+  color:var(--muted);
+  font-size:12px;          /* ✅ menos grande */
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-weight:900;
+}
 .list{display:flex;flex-direction:column;gap:12px}
 
 /* Day header */
@@ -72,20 +169,31 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
   padding:10px 12px;
   border-radius:14px;
   border:1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.12);
+  background: var(--soft2);
   box-shadow: 0 10px 28px rgba(0,0,0,.18);
 }
 .dayHeader .left{display:flex; flex-direction:column; gap:2px;}
-.dayHeader .title{font-weight:1000;}
-.dayHeader .sub{color: var(--muted); font-size:12px; font-weight:900;}
-.dayHeader .count{color: var(--muted); font-weight:900; font-size:12px;padding:6px 10px; border-radius:999px;border:1px solid rgba(255,255,255,.10);background: rgba(255,255,255,.03);}
+.dayHeader .title{font-weight:900;font-size:14px;letter-spacing:-0.01em}
+.dayHeader .sub{color: var(--muted); font-size:12px; font-weight:700;}
+.dayHeader .count{
+  color: var(--muted);
+  font-weight:800;
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+}
 
+/* Match card */
 .match{
   display:grid;
-  grid-template-columns:170px 1fr; /* ✅ sin columna de botones */
+  grid-template-columns:170px 1fr;
   gap:12px;
   align-items:center;
-  padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);
+  padding:14px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.07);
   background:linear-gradient(180deg,rgba(13,35,23,.90),rgba(11,28,19,.72));
   position:relative; overflow:hidden;
   cursor:pointer;
@@ -98,25 +206,44 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
   box-shadow: 0 18px 60px rgba(0,0,0,.35);
 }
 .match:after{
-  content:""; position:absolute; inset:-2px; pointer-events:none; opacity:.75;
+  content:""; position:absolute; inset:-2px; pointer-events:none; opacity:.70;
   background:
-    radial-gradient(520px 180px at 18% 18%, rgba(34,197,94,.18), transparent 60%),
-    radial-gradient(520px 180px at 85% 10%, rgba(96,165,250,.12), transparent 60%);
+    radial-gradient(520px 180px at 18% 18%, rgba(34,197,94,.16), transparent 60%),
+    radial-gradient(520px 180px at 85% 10%, rgba(96,165,250,.10), transparent 60%);
 }
 .match > *{position:relative; z-index:1}
 @media(max-width:560px){.match{grid-template-columns:120px 1fr}}
 
 .meta{display:flex;flex-direction:column;gap:10px}
-.time{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);font-weight:900}
-.kickoff{color:var(--txt)}
+.time{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+  font-size:12px;
+  color:var(--muted);
+  font-weight:800;
+}
+.kickoff{color:var(--txt); font-weight:900}
 .badge{
-  padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.04);font-weight:950; letter-spacing:.2px; display:inline-flex; gap:6px; align-items:center;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04);
+  font-weight:900;
+  letter-spacing:.02em;
+  display:inline-flex;
+  gap:6px;
+  align-items:center;
+  font-size:11px;          /* ✅ más UX */
 }
 .badge.live{color:var(--live);border-color:rgba(96,165,250,.55);background:rgba(96,165,250,.10)}
 .badge.ft{color:var(--good);border-color:rgba(52,211,153,.45);background:rgba(52,211,153,.10)}
 .badge.ns{color:var(--ns);border-color:rgba(167,243,208,.40);background:rgba(167,243,208,.10)}
-.minute{padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);font-weight:950}
+.minute{
+  padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04);font-weight:900;font-size:11px
+}
 @keyframes dotBlink{0%,49%{opacity:1}50%,100%{opacity:.25}}
 .liveDot{width:7px;height:7px;border-radius:999px;background:var(--live);animation:dotBlink 1.2s linear infinite;box-shadow:0 0 12px rgba(96,165,250,.55)}
 
@@ -125,16 +252,16 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
   display:grid;
   grid-template-columns: auto 1fr auto;
   align-items:center;
-  gap:16px;
+  gap:14px;
   padding:14px;
   border-radius:16px;
   border:1px solid rgba(255,255,255,.08);
-  background:rgba(0,0,0,.16)
+  background:rgba(0,0,0,.14);
 }
-.side{display:flex;align-items:center;gap:12px;min-width:0}
+.side{display:flex;align-items:center;min-width:0}
 .side.right{justify-content:flex-end}
 .logoBig{
-  width:60px;height:60px;
+  width:58px;height:58px;            /* ✅ un pelín más compacto */
   border-radius:18px;
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.12);
@@ -149,52 +276,60 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
   gap:6px;
   justify-self:center;
 }
-
-/* ✅ VS/score más chico para que NO se empalme */
 .scoreCenter{
-  display:flex;align-items:center;justify-content:center;gap:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
   padding:10px 14px;
-  border-radius:14px;border:1px solid rgba(255,255,255,.14);
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
   background:rgba(255,255,255,.06);
-  box-shadow:0 10px 26px rgba(0,0,0,.25);
-  min-width:110px;              /* ✅ más chico */
+  box-shadow:0 10px 26px rgba(0,0,0,.22);
+  min-width:110px;
 }
 .scoreCenter .n{
-  font-size:24px;               /* ✅ más chico */
-  font-weight:1000;
+  font-size:22px;                    /* ✅ menos grande */
+  font-weight:900;
   line-height:1;
   font-variant-numeric:tabular-nums
 }
 .scoreCenter .dash{opacity:.6}
 .scoreCenter .vs{
-  font-size:11px;               /* ✅ más chico */
+  font-size:11px;
   color:var(--muted);
-  font-weight:1000;
-  letter-spacing:.9px
+  font-weight:900;
+  letter-spacing:.12em
 }
 .subline{
-  font-size:10.5px;             /* ✅ más chico */
-  color:var(--muted);font-weight:900;letter-spacing:.3px;
-  padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.12);
+  font-size:10.5px;
+  color:var(--muted);
+  font-weight:800;
+  letter-spacing:.06em;
+  padding:5px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.12);
+  text-transform:uppercase;
 }
+
 @keyframes scoreFlip{0%{transform:translateY(0) scale(1);opacity:1}40%{transform:translateY(-4px) scale(1.02)}100%{transform:translateY(0) scale(1);opacity:1}}
 .scoreFlip{animation:scoreFlip .35s ease-out}
 
-.kv{display:flex;justify-content:space-between;padding:10px 12px;border-radius:14px;
-  border:1px solid rgba(255,255,255,.07);background:rgba(13,35,23,.55)}
-.k{color:var(--muted);font-size:12px;font-weight:950}
-.v{font-weight:1000}
-.small{color:var(--muted);font-size:12px;line-height:1.45;margin-top:10px}
-footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
+.kv{
+  display:flex;justify-content:space-between;
+  padding:10px 12px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(13,35,23,.55)
+}
+.k{color:var(--muted);font-size:12px;font-weight:800}
+.v{font-weight:900;font-size:13px}
+.small{color:var(--muted);font-size:12px;line-height:1.45;margin-top:10px;font-weight:600}
+footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;font-weight:600}
 .empty{padding:16px;border-radius:16px;border:1px dashed rgba(255,255,255,.18);color:var(--muted);text-align:center}
-.legend{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}
-.dot{display:inline-block;width:10px;height:10px;border-radius:999px;margin-right:6px}
-.dot.past{background:rgba(255,255,255,.35)}
-.dot.current{background:rgba(52,211,153,.75)}
-.dot.future{background:rgba(96,165,250,.75)}
 
 /* ==============================
-   MODAL (igual que antes)
+   MODAL
    ============================== */
 .modalOverlay{position:fixed; inset:0;background: rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;padding: 14px;z-index: 9999;}
 .modalOverlay.show{display:flex}
@@ -217,34 +352,42 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
 .modalTop::after{content:"";position:absolute; inset:0;background: linear-gradient(180deg, rgba(0,0,0,.40), rgba(0,0,0,.08));pointer-events:none;}
 .modalTop > *{position:relative; z-index:1}
 .modalHeaderRow{display:flex; justify-content:space-between; align-items:center; gap:10px;}
-.pillMini{display:inline-flex; align-items:center; gap:8px;padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background: rgba(255,255,255,.04);color: var(--muted);font-weight:900;font-size:12px;}
-.closeBtn{border:1px solid rgba(255,255,255,.12);background: rgba(255,255,255,.04);color: var(--txt);border-radius: 999px;padding: 8px 10px;font-weight: 1000;cursor:pointer;}
+.pillMini{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: var(--muted);
+  font-weight:800;font-size:12px;
+}
+.closeBtn{border:1px solid rgba(255,255,255,.12);background: rgba(255,255,255,.04);color: var(--txt);border-radius: 999px;padding: 8px 10px;font-weight: 900;cursor:pointer;}
+
 .modalScoreRow{margin-top: 14px;display:grid;grid-template-columns: 1fr auto 1fr;align-items:center;gap: 14px;}
 .modalTeam{display:flex; gap:12px; align-items:center; min-width:0;}
 .modalTeam.right{justify-content:flex-end}
-.modalBigLogo{width:64px;height:64px;border-radius: 20px;border:1px solid rgba(255,255,255,.14);background: rgba(255,255,255,.06);object-fit:contain;box-shadow: 0 18px 50px rgba(0,0,0,.25);}
-.modalTeam .tname{font-weight:1000;font-size:18px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.modalBigLogo{width:62px;height:62px;border-radius: 20px;border:1px solid rgba(255,255,255,.14);background: rgba(255,255,255,.06);object-fit:contain;box-shadow: 0 18px 50px rgba(0,0,0,.25);}
+.modalTeam .tname{font-weight:900;font-size:16px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .modalScore{display:flex; flex-direction:column; align-items:center; gap:6px; min-width:160px;}
-.modalScore .big{font-weight:1100;font-variant-numeric: tabular-nums;font-size: 46px;line-height: 1;}
-.modalScore .status{color: var(--muted);font-weight:900;font-size: 12px;letter-spacing:.3px;}
-@media(max-width:560px){.modalBigLogo{width:56px;height:56px}.modalTeam .tname{font-size:15px}.modalScore .big{font-size:40px}.modalScore{min-width:140px}}
+.modalScore .big{font-weight:900;font-variant-numeric: tabular-nums;font-size: 44px;line-height: 1;letter-spacing:-0.02em;}
+.modalScore .status{color: var(--muted);font-weight:800;font-size: 12px;letter-spacing:.06em;text-transform:uppercase;}
+@media(max-width:560px){.modalBigLogo{width:54px;height:54px}.modalTeam .tname{font-size:14px}.modalScore .big{font-size:38px}.modalScore{min-width:140px}}
+
 .modalTabs{display:flex; gap:10px;padding: 12px 14px;border-bottom:1px solid rgba(255,255,255,.08);background: rgba(255,255,255,.02);overflow:auto;}
-.modalTab{white-space:nowrap;padding:10px 12px;border-radius:999px;border:1px solid transparent;background: transparent;color: var(--muted);font-weight: 1000;cursor:pointer;}
+.modalTab{white-space:nowrap;padding:10px 12px;border-radius:999px;border:1px solid transparent;background: transparent;color: var(--muted);font-weight: 900;cursor:pointer;font-size:13px;}
 .modalTab.active{color: var(--txt);border-color: rgba(255,255,255,.12);background: rgba(255,255,255,.06);}
 .modalBody{padding: 14px;max-height: calc(92vh - 230px);overflow:auto;}
 .cardBlock{border:1px solid rgba(255,255,255,.08);background: rgba(255,255,255,.03);border-radius: 18px;padding: 12px;}
 .row2{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
 @media(max-width:720px){ .row2{grid-template-columns:1fr} }
 .statRow{display:grid;grid-template-columns: 1fr 52px 1fr;gap:10px;align-items:center;padding:10px 12px;border-radius: 14px;border:1px solid rgba(255,255,255,.08);background: rgba(0,0,0,.12);}
-.statRow .label{grid-column: 1 / -1;color: var(--muted);font-size:12px;font-weight:900;margin-bottom:6px;}
+.statRow .label{grid-column: 1 / -1;color: var(--muted);font-size:12px;font-weight:800;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;}
 .bar{height:10px;border-radius:999px;background: rgba(255,255,255,.08);overflow:hidden;}
 .bar > div{height:100%; width:50%}
-.statNums{font-weight:1000;font-variant-numeric: tabular-nums;text-align:center;color: var(--txt);}
-.smallMuted{color:var(--muted); font-size:12px; font-weight:900}
+.statNums{font-weight:900;font-variant-numeric: tabular-nums;text-align:center;color: var(--txt);}
+.smallMuted{color:var(--muted); font-size:12px; font-weight:700}
 .eventRow{display:flex; justify-content:space-between; gap:12px;padding:10px 12px;border-radius: 14px;border:1px solid rgba(255,255,255,.08);background: rgba(0,0,0,.12);}
 .eventRow .left{display:flex; gap:10px; align-items:center; min-width:0;}
-.eventRow .min{font-weight:1000; color: var(--txt);padding:6px 10px; border-radius:999px;border:1px solid rgba(255,255,255,.10);background: rgba(255,255,255,.03);flex:0 0 auto;}
-.eventRow .desc{color: var(--muted);font-weight:900;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.eventRow .min{font-weight:900; color: var(--txt);padding:6px 10px; border-radius:999px;border:1px solid rgba(255,255,255,.10);background: rgba(255,255,255,.03);flex:0 0 auto;}
+.eventRow .desc{color: var(--muted);font-weight:800;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 </style>
 </head>
 
@@ -253,9 +396,9 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
   <header>
     <div class="brand">
       <div class="logo"></div>
-      <div>
-        <div style="font-weight:1000;letter-spacing:.2px">Marcadores — Pro TV</div>
-        <div style="color:var(--muted);font-size:12px">Jornadas + días + detalle tipo app</div>
+      <div class="brandTitle">
+        <div class="h">Marcadores — Pro TV</div>
+        <div class="p">Jornadas + días + detalle tipo app</div>
       </div>
     </div>
 
@@ -268,7 +411,7 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
       <button class="btn primary" id="refreshBtn">↻ Actualizar</button>
     </div>
 
-    <div class="legend" style="width:100%;margin-top:10px">
+    <div class="legend">
       <span><span class="dot past"></span>Pasada</span>
       <span><span class="dot current"></span>Actual</span>
       <span><span class="dot future"></span>Futura</span>
@@ -300,7 +443,7 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
     </aside>
   </div>
 
-  <footer>Pro TV — clic en partido abre detalle tipo app</footer>
+  <footer>Pro TV — clic en partido abre detalle</footer>
 </div>
 
 <!-- MODAL -->
@@ -405,7 +548,6 @@ function animateScore(id){
   const box=document.querySelector(`[data-scorebox="${id}"]`);
   if(!box)return; box.classList.remove("scoreFlip"); void box.offsetWidth; box.classList.add("scoreFlip");
 }
-
 function mapFixtures(json){
   const fixtures=(json&&json.response)?json.response:[];
   return fixtures.map(f=>{
@@ -417,7 +559,6 @@ function mapFixtures(json){
     return{
       id:String(f.fixture?.id),
       fixtureId:f.fixture?.id,
-      leagueId:f.league?.id,
       leagueName:f.league?.name||"",
       dateISO,
       time:dateISO?new Date(dateISO).toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"}):"--:--",
@@ -525,7 +666,7 @@ function groupByDay(arr){
   return keys.map(k=>({dayKey:k,items:map.get(k)}));
 }
 
-// render
+// render list
 function applySearch(arr){
   if(!query)return arr;
   const q=query.toLowerCase();
@@ -620,6 +761,7 @@ async function loadRoundByIndex(idx){
   elNote.textContent="OK.";
   render(currentData);
 }
+
 async function refresh(){
   const meta=LEAGUES[active];
   elNote.textContent="Cargando…";
@@ -707,7 +849,7 @@ function closeMatchModal(){
   selectedMatch=null;
 }
 
-// demo content
+// demo content (igual)
 function statBarRow(label, homeVal, awayVal){
   const total=(homeVal+awayVal)||1;
   const homePct=Math.round((homeVal/total)*100);
@@ -715,7 +857,7 @@ function statBarRow(label, homeVal, awayVal){
   return `
     <div class="statRow">
       <div class="label">${label}</div>
-      <div class="smallMuted" style="text-align:left;font-weight:1000">${homeVal}</div>
+      <div class="smallMuted" style="text-align:left;font-weight:900">${homeVal}</div>
       <div class="statNums">${awayVal}</div>
       <div class="bar" style="grid-column:1 / span 1"><div style="width:${homePct}%; background: rgba(239,68,68,.75)"></div></div>
       <div></div>
@@ -728,7 +870,7 @@ function renderModalStats(match){
   tabStats.innerHTML=`
     <div class="row2">
       <div class="cardBlock">
-        <div style="font-weight:1000;margin-bottom:8px">Team Stats</div>
+        <div style="font-weight:900;margin-bottom:8px">Team Stats</div>
         ${statBarRow("Posesión %", demo.Possession[0], demo.Possession[1])}
         ${statBarRow("Tiros", demo.Shots[0], demo.Shots[1])}
         ${statBarRow("Tiros a puerta", demo.SOG[0], demo.SOG[1])}
@@ -738,7 +880,7 @@ function renderModalStats(match){
         <div class="smallMuted" style="margin-top:10px">* Demo visual. Luego conectamos stats reales.</div>
       </div>
       <div class="cardBlock">
-        <div style="font-weight:1000;margin-bottom:8px">Info</div>
+        <div style="font-weight:900;margin-bottom:8px">Info</div>
         <div class="smallMuted">Fecha: ${match.dateISO ? new Date(match.dateISO).toLocaleString("es-MX",{timeZone:TZ, weekday:"long", day:"numeric", month:"long", hour:"2-digit", minute:"2-digit"}) : "—"}</div>
         <div class="smallMuted" style="margin-top:8px">Liga: ${match.leagueName || "—"}</div>
         <div class="smallMuted" style="margin-top:8px">Fixture ID: ${match.fixtureId || match.id}</div>
@@ -749,7 +891,7 @@ function renderModalStats(match){
 function renderModalEvents(match){
   const demoEvents=[{min:"13'",txt:`Gol ${match.home}`},{min:"40'",txt:`Gol ${match.away}`},{min:"77'",txt:`Tarjeta ${match.home}`},{min:"84'",txt:`Gol ${match.away}`}];
   tabEvents.innerHTML=`
-    <div style="font-weight:1000;margin-bottom:10px">Play-by-Play</div>
+    <div style="font-weight:900;margin-bottom:10px">Play-by-Play</div>
     <div style="display:flex;flex-direction:column;gap:10px">
       ${demoEvents.map(e=>`
         <div class="eventRow">
@@ -762,8 +904,8 @@ function renderModalEvents(match){
 }
 function renderModalStandings(match){
   tabStandings.innerHTML=`
-    <div style="font-weight:1000;margin-bottom:10px">Standings</div>
-    <div class="smallMuted">Aquí conectamos la tabla real (API standings) y resaltamos ambos equipos.</div>
+    <div style="font-weight:900;margin-bottom:10px">Standings</div>
+    <div class="smallMuted">Aquí conectamos la tabla real y resaltamos ambos equipos.</div>
     <div class="smallMuted" style="margin-top:10px">* Demo por ahora.</div>
   `;
 }
