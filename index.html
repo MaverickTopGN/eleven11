@@ -16,15 +16,17 @@
   --shadow:0 18px 60px rgba(0,0,0,.45); --radius:18px;
 }
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0; color:var(--txt);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
   letter-spacing:-0.01em;
   background:
     radial-gradient(900px 520px at 18% -10%, rgba(34,197,94,.20), transparent 60%),
     radial-gradient(900px 520px at 80% -10%, rgba(96,165,250,.12), transparent 60%),
     linear-gradient(180deg,var(--bg),var(--bg2));
 }
+
 .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 60px}
 header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
 .brand{display:flex;gap:12px;align-items:center}
@@ -32,29 +34,47 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
 .brandTitle .h{font-weight:900;font-size:16px;line-height:1.15}
 .brandTitle .p{color:var(--muted);font-size:12px;font-weight:600}
 .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.btn{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);border-radius:999px;padding:9px 12px;font-weight:800;font-size:13px}
+
+.btn{
+  cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);
+  border-radius:999px;padding:9px 12px;font-weight:800;font-size:13px;
+  box-shadow:0 10px 28px rgba(0,0,0,.18);
+}
 .btn.primary{border-color:rgba(167,243,208,.35);background:rgba(167,243,208,.10)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
-.select{appearance:none;padding-right:34px;background-image:linear-gradient(45deg,transparent 50%,rgba(255,255,255,.55) 50%),linear-gradient(135deg,rgba(255,255,255,.55) 50%,transparent 50%);background-position:calc(100% - 18px) calc(50% - 3px),calc(100% - 12px) calc(50% - 3px);background-size:6px 6px,6px 6px;background-repeat:no-repeat}
+.select{
+  appearance:none;
+  padding-right:34px;
+  background-image:linear-gradient(45deg,transparent 50%,rgba(255,255,255,.55) 50%),linear-gradient(135deg,rgba(255,255,255,.55) 50%,transparent 50%);
+  background-position:calc(100% - 18px) calc(50% - 3px),calc(100% - 12px) calc(50% - 3px);
+  background-size:6px 6px,6px 6px;background-repeat:no-repeat
+}
 .pill{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.04);border:1px solid var(--line);padding:9px 12px;border-radius:999px}
 .pill input{background:transparent;border:0;outline:0;color:var(--txt);width:min(260px,52vw);font-weight:700;font-size:13px}
+
 .legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;font-weight:700;width:100%;margin-top:10px}
 .dot{display:inline-block;width:9px;height:9px;border-radius:999px;margin-right:6px}
 .dot.past{background:rgba(255,255,255,.35)}
 .dot.current{background:rgba(52,211,153,.78)}
 .dot.future{background:rgba(96,165,250,.75)}
+
 .tabs{display:flex;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin:14px 0;box-shadow:var(--shadow);overflow:auto}
 .tab{padding:10px 12px;border-radius:999px;color:var(--muted);font-weight:900;font-size:13px;cursor:pointer;border:1px solid transparent;background:transparent;white-space:nowrap}
 .tab[aria-selected="true"]{color:var(--txt);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+
 .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
 @media(max-width:920px){.grid{grid-template-columns:1fr}}
 .panel{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
 .panel h2{margin:0 0 10px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.14em;font-weight:900}
 .list{display:flex;flex-direction:column;gap:12px}
+
+/* Day header */
 .dayHeader{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.12)}
 .dayHeader .title{font-weight:900;font-size:14px}
 .dayHeader .sub{color:var(--muted);font-size:12px;font-weight:700}
 .dayHeader .count{color:var(--muted);font-weight:800;font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.03)}
+
+/* Match card */
 .match{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(180deg,rgba(13,35,23,.90),rgba(11,28,19,.72));position:relative;overflow:hidden;cursor:pointer}
 @media(max-width:560px){.match{grid-template-columns:110px 1fr}}
 .time{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);font-weight:800}
@@ -64,14 +84,16 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
 .badge.ft{color:var(--good);border-color:rgba(52,211,153,.45);background:rgba(52,211,153,.10)}
 .badge.live{color:var(--live);border-color:rgba(96,165,250,.55);background:rgba(96,165,250,.10)}
 .minute{padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);font-weight:900;font-size:11px}
+
 .broadcast{display:grid;grid-template-columns:auto 86px auto;align-items:center;gap:10px;padding:10px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.14)}
 .logoBig{width:50px;height:50px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);object-fit:contain}
-.scoreWrap{display:flex;flex-direction:column;align-items:center;gap:6px;justify-self:center}
+.scoreWrap{display:flex;flex-direction:column;align-items:center;gap:6px}
 .scoreCenter{display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 9px;border-radius:11px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);min-width:74px}
 .scoreCenter .n{font-size:18px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
 .scoreCenter .dash{opacity:.55}
 .scoreCenter .vs{font-size:9.5px;color:var(--muted);font-weight:900;letter-spacing:.14em;text-transform:uppercase}
 .subline{font-size:9.5px;color:var(--muted);font-weight:800;letter-spacing:.08em;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.12);text-transform:uppercase}
+
 .kv{display:flex;justify-content:space-between;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.07);background:rgba(13,35,23,.55)}
 .k{color:var(--muted);font-size:12px;font-weight:800}
 .v{font-weight:900;font-size:13px}
@@ -89,7 +111,6 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;font-
   --awayTint: rgba(96,165,250,.16);
   --homeBar: rgba(239,68,68,.85);
   --awayBar: rgba(96,165,250,.85);
-
   position:relative;padding: 16px;border-bottom:1px solid rgba(255,255,255,.08);overflow:hidden;
 }
 .modalTop::before{
@@ -111,41 +132,33 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;font-
 .modalTeam{display:flex; gap:12px; align-items:center; min-width:0;}
 .modalTeam.right{justify-content:flex-end}
 .modalBigLogo{width:54px;height:54px;border-radius: 18px;border:1px solid rgba(255,255,255,.14);background: rgba(255,255,255,.06);object-fit:contain}
-.modalTeam .tname{font-family: Inter; font-weight:900;font-size:14px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.modalTeam .tname{font-weight:900;font-size:14px;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .modalScore{display:flex; flex-direction:column; align-items:center; gap:6px; min-width:140px;}
-.modalScore .big{font-family: Inter; font-weight:900;font-variant-numeric: tabular-nums;font-size: 38px;line-height: 1;letter-spacing:-0.02em;}
+.modalScore .big{font-weight:900;font-variant-numeric: tabular-nums;font-size: 38px;line-height: 1;letter-spacing:-0.02em;}
 .modalScore .status{color: var(--muted);font-weight:800;font-size: 12px;letter-spacing:.06em;text-transform:uppercase;}
 .modalTabs{display:flex; gap:10px;padding: 12px 14px;border-bottom:1px solid rgba(255,255,255,.08);background: rgba(255,255,255,.02);overflow:auto;}
 .modalTab{white-space:nowrap;padding:10px 12px;border-radius:999px;border:1px solid transparent;background: transparent;color: var(--muted);font-weight: 900;cursor:pointer;font-size:13px;}
 .modalTab.active{color: var(--txt);border-color: rgba(255,255,255,.12);background: rgba(255,255,255,.06);}
 .modalBody{padding: 14px;max-height: calc(92vh - 230px);overflow:auto;}
 .cardBlock{border:1px solid rgba(255,255,255,.08);background: rgba(255,255,255,.03);border-radius: 18px;padding: 12px;}
-/* ✅ stats typography “formal” */
+
 .statsFont{font-family:"Source Sans 3", Inter, system-ui}
 .statsTitle{font-weight:800;color:var(--txt);font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px}
-.statItem{
-  padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.08);
-  background:rgba(0,0,0,.12);
-  margin-bottom:10px;
-}
+.statItem{padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.12);margin-bottom:10px}
 .statLabel{color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
-.statLine{
-  display:grid;
-  grid-template-columns: 38px 1fr 38px;
-  gap:10px;
-  align-items:center;
-}
+.statLine{display:grid;grid-template-columns:38px 1fr 38px;gap:10px;align-items:center}
 .statNum{font-variant-numeric:tabular-nums;font-weight:800;font-size:13px;text-align:center}
 .track{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;position:relative}
-.fillL{height:100%;background:var(--homeBar);border-radius:999px}
-.fillR{height:100%;background:var(--awayBar);border-radius:999px}
+.fillL{height:100%;border-radius:999px}
+.fillR{height:100%;border-radius:999px;position:absolute;right:0;top:0}
+
 .playerBlock{margin-top:14px}
 .playerHeader{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}
 .playerHeader .team{font-weight:900;font-size:14px}
 .playerList{display:flex;flex-direction:column;gap:8px}
 .playerRow{
   display:grid;
-  grid-template-columns: 34px 1fr 70px;
+  grid-template-columns:34px 1fr 70px;
   gap:10px;
   align-items:center;
   padding:10px 12px;
@@ -156,13 +169,7 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;font-
 .pNo{color:var(--muted);font-weight:800;font-variant-numeric:tabular-nums;text-align:center}
 .pName{font-weight:800;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pBadges{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap}
-.badg{
-  font-size:11px;font-weight:900;
-  padding:4px 8px;border-radius:999px;
-  border:1px solid rgba(255,255,255,.10);
-  background:rgba(255,255,255,.04);
-  color:var(--muted);
-}
+.badg{font-size:11px;font-weight:900;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted)}
 .badg.g{color:#fff;border-color:rgba(255,255,255,.18)}
 .badg.y{color:#fcd34d;border-color:rgba(252,211,77,.35);background:rgba(252,211,77,.10)}
 .badg.r{color:#fb7185;border-color:rgba(251,113,133,.35);background:rgba(251,113,133,.10)}
@@ -308,7 +315,7 @@ function periodFromShort(short){
   if(short==="NS")return"PRÓXIMO"; return"EN JUEGO";
 }
 function badge(status){
-  if(status==="LIVE")return`<span class="badge live"><span class="liveDot"></span>LIVE</span>`;
+  if(status==="LIVE")return`<span class="badge live">LIVE</span>`;
   if(status==="FT")return`<span class="badge ft">FT</span>`;
   return`<span class="badge ns">NS</span>`;
 }
@@ -325,11 +332,6 @@ function logoImg(src, alt, cls="logoBig"){
   const fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='100%25' height='100%25' rx='14' ry='14' fill='rgba(255,255,255,0.08)'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='30'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E";
   return `<img class="${cls}" src="${src||fallback}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.src='${fallback}'">`;
 }
-function animateScore(id){
-  const box=document.querySelector(`[data-scorebox="${id}"]`);
-  if(!box)return; box.classList.remove("scoreFlip"); void box.offsetWidth; box.classList.add("scoreFlip");
-}
-
 function mapFixtures(json){
   const fixtures=(json&&json.response)?json.response:[];
   return fixtures.map(f=>{
@@ -370,9 +372,38 @@ async function api(endpoint, params){
   return res.json();
 }
 
-// rounds/current
+function applySearch(arr){
+  if(!query)return arr;
+  const q=query.toLowerCase();
+  return arr.filter(m=>m.home.toLowerCase().includes(q)||m.away.toLowerCase().includes(q));
+}
+
+function dayKeyFromISO(iso){
+  if(!iso)return"unknown";
+  const d=new Date(iso);
+  return new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"}).format(d);
+}
+function dayTitleFromKey(key){
+  const [y,m,d]=key.split("-").map(Number);
+  const dt=new Date(Date.UTC(y,m-1,d,12,0,0));
+  const pretty=new Intl.DateTimeFormat("es-MX",{timeZone:TZ,weekday:"long",day:"numeric",month:"long"}).format(dt);
+  return pretty.charAt(0).toUpperCase()+pretty.slice(1);
+}
+function groupByDay(arr){
+  const map=new Map();
+  arr.forEach(m=>{
+    const k=dayKeyFromISO(m.dateISO);
+    if(!map.has(k))map.set(k,[]);
+    map.get(k).push(m);
+  });
+  const keys=[...map.keys()].sort((a,b)=>a==="unknown"?1:b==="unknown"?-1:a.localeCompare(b));
+  keys.forEach(k=>map.get(k).sort((a,b)=>(new Date(a.dateISO||0)).getTime()-(new Date(b.dateISO||0)).getTime()));
+  return keys.map(k=>({dayKey:k,items:map.get(k)}));
+}
+
 const FINISHED=new Set(["FT","AET","PEN"]);
 function isRoundFinished(fixturesRaw){ if(!fixturesRaw.length)return false; return fixturesRaw.every(f=>FINISHED.has(f.fixture?.status?.short)); }
+
 async function getRoundsRaw(leagueKey){
   if(roundsCache.has(leagueKey))return roundsCache.get(leagueKey);
   const meta=LEAGUES[leagueKey];
@@ -404,6 +435,7 @@ async function detectCurrentRound(leagueKey){
 }
 function roundPretty(s){return s.replace("Regular Season -","Jornada").trim();}
 function statusEmoji(st){return st==="current"?"🟢":st==="future"?"🔵":"⚫";}
+
 function renderRoundSelector(){
   roundSelect.innerHTML="";
   rounds.forEach((r,i)=>{
@@ -417,46 +449,6 @@ function renderRoundSelector(){
   nextRoundBtn.disabled=(roundIndex>=rounds.length-1);
 }
 
-// group by day
-function dayKeyFromISO(iso){
-  if(!iso)return"unknown";
-  const d=new Date(iso);
-  return new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"}).format(d);
-}
-function dayTitleFromKey(key){
-  const [y,m,d]=key.split("-").map(Number);
-  const dt=new Date(Date.UTC(y,m-1,d,12,0,0));
-  const pretty=new Intl.DateTimeFormat("es-MX",{timeZone:TZ,weekday:"long",day:"numeric",month:"long"}).format(dt);
-  return pretty.charAt(0).toUpperCase()+pretty.slice(1);
-}
-function groupByDay(arr){
-  const map=new Map();
-  arr.forEach(m=>{
-    const k=dayKeyFromISO(m.dateISO);
-    if(!map.has(k))map.set(k,[]);
-    map.get(k).push(m);
-  });
-  const keys=[...map.keys()].sort((a,b)=>{
-    if(a==="unknown")return 1;
-    if(b==="unknown")return -1;
-    return a.localeCompare(b);
-  });
-  keys.forEach(k=>{
-    map.get(k).sort((a,b)=>{
-      const ta=a.dateISO?new Date(a.dateISO).getTime():0;
-      const tb=b.dateISO?new Date(b.dateISO).getTime():0;
-      return ta-tb;
-    });
-  });
-  return keys.map(k=>({dayKey:k,items:map.get(k)}));
-}
-
-// render list
-function applySearch(arr){
-  if(!query)return arr;
-  const q=query.toLowerCase();
-  return arr.filter(m=>m.home.toLowerCase().includes(q)||m.away.toLowerCase().includes(q));
-}
 function card(m){
   return `
   <article class="match" data-fixture="${m.id}">
@@ -520,15 +512,6 @@ function render(arr){
       if(m)openMatchModal(m);
     });
   });
-
-  filtered.forEach(m=>{
-    if(m.status!=="NS" && typeof m.h==="number" && typeof m.a==="number"){
-      const key=`${m.h}-${m.a}`;
-      const prev=lastScores.get(m.id);
-      if(prev && prev!==key)animateScore(m.id);
-      lastScores.set(m.id,key);
-    }
-  });
 }
 
 async function loadRoundByIndex(idx){
@@ -537,58 +520,59 @@ async function loadRoundByIndex(idx){
   const meta=LEAGUES[active];
   const r=rounds[roundIndex];
   elRoundLabel.textContent=`${roundPretty(r.round)} (${r.status==="current"?"Actual":r.status==="past"?"Pasada":"Futura"})`;
-  elNote.textContent=`Cargando ${roundPretty(r.round)}…`;
+
   const j=await api("fixtures",{league:meta.id,season:SEASON,round:r.round});
   currentData=mapFixtures(j);
-  elNote.textContent="OK.";
+  render(currentData);
+}
+
+async function fallbackNextFixtures(){
+  // si rounds viene vacío, nunca dejamos el sitio en blanco
+  const meta=LEAGUES[active];
+  elNote.textContent="No hay rounds disponibles. Mostrando próximos partidos…";
+  const j=await api("fixtures",{league:meta.id,season:SEASON,next:15});
+  currentData=mapFixtures(j);
+  elRoundLabel.textContent="Próximos";
   render(currentData);
 }
 
 async function refresh(){
-  const meta=LEAGUES[active];
-  elNote.textContent="Cargando…";
+  try{
+    const meta=LEAGUES[active];
+    elNote.textContent="Cargando…";
 
-  if(mode==="live"){
-    elRoundLabel.textContent="—";
-    const j=await api("fixtures",{league:meta.id,season:SEASON,live:"all"});
-    currentData=mapFixtures(j);
-    elNote.textContent="OK: LIVE.";
-    render(currentData);
-    return;
+    if(mode==="live"){
+      elRoundLabel.textContent="—";
+      const j=await api("fixtures",{league:meta.id,season:SEASON,live:"all"});
+      currentData=mapFixtures(j);
+      elNote.textContent="OK: LIVE.";
+      render(currentData);
+      return;
+    }
+
+    const roundsRaw=await getRoundsRaw(active);
+
+    if(!roundsRaw.length){
+      await fallbackNextFixtures();
+      return;
+    }
+
+    const currentRound=await detectCurrentRound(active);
+    const currentIdx=Math.max(0, roundsRaw.indexOf(currentRound));
+
+    rounds=roundsRaw.map((round,idx)=>({ round,index:idx,status: idx<currentIdx?"past":(idx===currentIdx?"current":"future") }));
+    roundIndex=currentIdx;
+    renderRoundSelector();
+
+    await loadRoundByIndex(roundIndex);
+    elNote.textContent="OK.";
+  }catch(err){
+    elMatches.innerHTML = `<div class="empty">Error cargando datos. Revisa tu function y endpoints.<br><br><span style="opacity:.8">${String(err)}</span></div>`;
+    elNote.textContent = "Error.";
   }
-
-  const roundsRaw=await getRoundsRaw(active);
-  const currentRound=await detectCurrentRound(active);
-  const currentIdx=Math.max(0, roundsRaw.indexOf(currentRound));
-
-  rounds=roundsRaw.map((round,idx)=>({ round,index:idx,status: idx<currentIdx?"past":(idx===currentIdx?"current":"future") }));
-  roundIndex=currentIdx;
-  renderRoundSelector();
-  await loadRoundByIndex(roundIndex);
 }
 
-// UI
-document.querySelectorAll(".tab").forEach(tab=>{
-  tab.addEventListener("click", async ()=>{
-    document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected","false"));
-    tab.setAttribute("aria-selected","true");
-    active=tab.dataset.league;
-    await refresh();
-  });
-});
-document.getElementById("search").addEventListener("input",(e)=>{ query=e.target.value.trim(); render(currentData); });
-roundSelect.addEventListener("change", e => loadRoundByIndex(Number(e.target.value)));
-prevRoundBtn.addEventListener("click", ()=>{ if(roundIndex>0)loadRoundByIndex(roundIndex-1); });
-nextRoundBtn.addEventListener("click", ()=>{ if(roundIndex<rounds.length-1)loadRoundByIndex(roundIndex+1); });
-modeBtn.addEventListener("click", async ()=>{
-  mode=(mode==="round")?"live":"round";
-  modeBtn.textContent=`Modo: ${mode==="round"?"JORNADA":"LIVE"}`;
-  await refresh();
-});
-refreshBtn.addEventListener("click", ()=> refresh());
-setInterval(()=>{ if(mode==="live")refresh(); }, 60000);
-
-// modal tabs + close
+// ===== Modal logic with real stats/lineups/events =====
 function setActiveModalTab(key){
   document.querySelectorAll(".modalTab").forEach(b=>b.classList.remove("active"));
   document.querySelector(`.modalTab[data-tab="${key}"]`).classList.add("active");
@@ -596,38 +580,12 @@ function setActiveModalTab(key){
   tabEvents.style.display=(key==="events")?"block":"none";
   tabStandings.style.display=(key==="standings")?"block":"none";
 }
+
 document.querySelectorAll(".modalTab").forEach(btn=>btn.addEventListener("click", ()=> setActiveModalTab(btn.dataset.tab)));
+
 closeModalBtn.addEventListener("click", closeMatchModal);
 modalOverlay.addEventListener("click",(e)=>{ if(e.target===modalOverlay)closeMatchModal(); });
 document.addEventListener("keydown",(e)=>{ if(e.key==="Escape" && modalOverlay.classList.contains("show"))closeMatchModal(); });
-
-function openMatchModal(match){
-  selectedMatch=match;
-  modalOverlay.classList.add("show");
-  document.body.style.overflow="hidden";
-
-  // blur back
-  modalTop.style.setProperty("--homeLogoUrl", `url("${match.homeLogo}")`);
-  modalTop.style.setProperty("--awayLogoUrl", `url("${match.awayLogo}")`);
-
-  // set bar colors based on tint (good looking + consistent)
-  modalTop.style.setProperty("--homeBar", "rgba(239,68,68,.85)");
-  modalTop.style.setProperty("--awayBar", "rgba(96,165,250,.85)");
-
-  modalLeague.textContent=match.leagueName||LEAGUES[active].name;
-  modalHome.innerHTML=`${logoImg(match.homeLogo, match.home, "modalBigLogo")}<div class="tname">${match.home}</div>`;
-  modalAway.innerHTML=`<div class="tname">${match.away}</div>${logoImg(match.awayLogo, match.away, "modalBigLogo")}`;
-
-  const scoreText=(match.status==="NS")?"—":`${match.h??0} – ${match.a??0}`;
-  modalScore.textContent=scoreText;
-  modalStatus.textContent=(match.status==="FT")?"Final":(match.status==="LIVE")?`En juego ${match.minute||""}`:"Próximo";
-
-  // Load real stats + lineups + events for players
-  renderModalLoading();
-  loadMatchDetails(match).catch(()=>{ /* handled */ });
-
-  setActiveModalTab("stats");
-}
 
 function closeMatchModal(){
   modalOverlay.classList.remove("show");
@@ -641,74 +599,6 @@ function renderModalLoading(){
   tabStandings.innerHTML = `<div class="smallMuted">Próximamente…</div>`;
 }
 
-async function loadMatchDetails(match){
-  const fixture = match.fixtureId;
-
-  const [statsJ, eventsJ, lineupsJ] = await Promise.all([
-    api("statistics", { fixture }),
-    api("events", { fixture }),
-    api("lineups", { fixture })
-  ]);
-
-  renderModalStatsReal(match, statsJ, eventsJ, lineupsJ);
-  renderModalEventsReal(match, eventsJ);
-  // standings lo hacemos después si quieres
-  tabStandings.innerHTML = `<div class="smallMuted">Standings (siguiente paso): API standings por liga/season.</div>`;
-}
-
-/* ====== EVENTS MAP ====== */
-function buildEventMaps(eventsJ){
-  const ev = (eventsJ && eventsJ.response) ? eventsJ.response : [];
-
-  const goals = new Map();  // playerId -> [mins]
-  const yellows = new Map(); // playerId -> [mins]
-  const reds = new Map();    // playerId -> [mins]
-  const subIn = new Map();   // playerId -> [mins]
-  const subOut = new Map();  // playerId -> [mins]
-
-  for (const e of ev){
-    const t = e.type;
-    const d = e.detail || "";
-    const min = e.time?.elapsed != null ? `${e.time.elapsed}'` : "";
-    const playerId = e.player?.id;
-
-    if (!playerId) continue;
-
-    if (t === "Goal"){
-      if (!goals.has(playerId)) goals.set(playerId, []);
-      goals.get(playerId).push(min);
-    }
-
-    if (t === "Card"){
-      if (d.includes("Yellow")){
-        if (!yellows.has(playerId)) yellows.set(playerId, []);
-        yellows.get(playerId).push(min);
-      }
-      if (d.includes("Red")){
-        if (!reds.has(playerId)) reds.set(playerId, []);
-        reds.get(playerId).push(min);
-      }
-    }
-
-    if (t === "subst"){
-      // En events: player = sale, assist = entra
-      const outId = e.player?.id;
-      const inId = e.assist?.id;
-      if (outId){
-        if (!subOut.has(outId)) subOut.set(outId, []);
-        subOut.get(outId).push(min);
-      }
-      if (inId){
-        if (!subIn.has(inId)) subIn.set(inId, []);
-        subIn.get(inId).push(min);
-      }
-    }
-  }
-
-  return { goals, yellows, reds, subIn, subOut };
-}
-
-/* ====== STATS REAL (compact + formal) ====== */
 function toNum(v){
   if (v == null) return 0;
   if (typeof v === "number") return v;
@@ -716,8 +606,7 @@ function toNum(v){
   const n = Number(s);
   return Number.isFinite(n) ? n : 0;
 }
-
-function statCompact(label, homeVal, awayVal, homeColorVar="--homeBar", awayColorVar="--awayBar"){
+function statCompact(label, homeVal, awayVal){
   const h = toNum(homeVal);
   const a = toNum(awayVal);
   const total = (h + a) || 1;
@@ -730,27 +619,66 @@ function statCompact(label, homeVal, awayVal, homeColorVar="--homeBar", awayColo
       <div class="statLine">
         <div class="statNum">${homeVal ?? 0}</div>
         <div class="track">
-          <div class="fillL" style="width:${hp}%; background: var(${homeColorVar});"></div>
-          <div class="fillR" style="width:${ap}%; background: var(${awayColorVar}); position:absolute; right:0; top:0;"></div>
+          <div class="fillL" style="width:${hp}%; background: var(--homeBar);"></div>
+          <div class="fillR" style="width:${ap}%; background: var(--awayBar);"></div>
         </div>
         <div class="statNum">${awayVal ?? 0}</div>
       </div>
     </div>
   `;
 }
-
 function pickStat(statsArr, teamName, key){
   const team = statsArr.find(x => x.team?.name === teamName) || statsArr[0];
   const list = team?.statistics || [];
   const item = list.find(s => s.type === key);
   return item ? item.value : null;
 }
+function buildEventMaps(eventsJ){
+  const ev = (eventsJ && eventsJ.response) ? eventsJ.response : [];
+  const goals = new Map(), yellows = new Map(), reds = new Map(), subIn = new Map(), subOut = new Map();
+
+  for (const e of ev){
+    const t = e.type;
+    const d = e.detail || "";
+    const min = e.time?.elapsed != null ? `${e.time.elapsed}'` : "";
+    const pid = e.player?.id;
+
+    if (t === "Goal" && pid){
+      if (!goals.has(pid)) goals.set(pid, []);
+      goals.get(pid).push(min);
+    }
+
+    if (t === "Card" && pid){
+      if (d.includes("Yellow")){
+        if (!yellows.has(pid)) yellows.set(pid, []);
+        yellows.get(pid).push(min);
+      }
+      if (d.includes("Red")){
+        if (!reds.has(pid)) reds.set(pid, []);
+        reds.get(pid).push(min);
+      }
+    }
+
+    if (t === "subst"){
+      const outId = e.player?.id;
+      const inId = e.assist?.id;
+      if (outId){
+        if (!subOut.has(outId)) subOut.set(outId, []);
+        subOut.get(outId).push(min);
+      }
+      if (inId){
+        if (!subIn.has(inId)) subIn.set(inId, []);
+        subIn.get(inId).push(min);
+      }
+    }
+  }
+  return { goals, yellows, reds, subIn, subOut };
+}
 
 function renderModalStatsReal(match, statsJ, eventsJ, lineupsJ){
   const statsArr = (statsJ && statsJ.response) ? statsJ.response : [];
   const evMaps = buildEventMaps(eventsJ);
 
-  // team stats (keys API)
   const possH = pickStat(statsArr, match.home, "Ball Possession");
   const possA = pickStat(statsArr, match.away, "Ball Possession");
   const shotsH = pickStat(statsArr, match.home, "Total Shots");
@@ -766,29 +694,25 @@ function renderModalStatsReal(match, statsJ, eventsJ, lineupsJ){
   const rH = pickStat(statsArr, match.home, "Red Cards");
   const rA = pickStat(statsArr, match.away, "Red Cards");
 
-  // lineups
   const lineups = (lineupsJ && lineupsJ.response) ? lineupsJ.response : [];
   const homeLU = lineups.find(l => l.team?.id === match.homeId) || lineups[0];
   const awayLU = lineups.find(l => l.team?.id === match.awayId) || lineups[1];
 
-  function renderPlayersBlock(title, lu, isHome){
+  function renderPlayersBlock(lu, isHome){
     if (!lu) return `<div class="smallMuted">Sin alineación disponible.</div>`;
-
-    const colorChip = isHome ? "var(--homeBar)" : "var(--awayBar)";
     const start = (lu.startXI || []).map(x => x.player);
     const subs = (lu.substitutes || []).map(x => x.player);
-
-    const teamName = lu.team?.name || title;
+    const teamName = lu.team?.name || (isHome ? match.home : match.away);
 
     const renderRow = (p) => {
       const pid = p.id;
       const badges = [];
 
-      if (evMaps.goals.has(pid)) badges.push(`<span class="badg g">⚽ ${evMaps.goals.get(pid).join(",")}</span>`);
-      if (evMaps.yellows.has(pid)) badges.push(`<span class="badg y">🟨 ${evMaps.yellows.get(pid).join(",")}</span>`);
-      if (evMaps.reds.has(pid)) badges.push(`<span class="badg r">🟥 ${evMaps.reds.get(pid).join(",")}</span>`);
-      if (evMaps.subIn.has(pid)) badges.push(`<span class="badg in">🔺 ${evMaps.subIn.get(pid).join(",")}</span>`);
-      if (evMaps.subOut.has(pid)) badges.push(`<span class="badg out">🔻 ${evMaps.subOut.get(pid).join(",")}</span>`);
+      if (pid && evMaps.goals.has(pid)) badges.push(`<span class="badg g">⚽ ${evMaps.goals.get(pid).join(",")}</span>`);
+      if (pid && evMaps.yellows.has(pid)) badges.push(`<span class="badg y">🟨 ${evMaps.yellows.get(pid).join(",")}</span>`);
+      if (pid && evMaps.reds.has(pid)) badges.push(`<span class="badg r">🟥 ${evMaps.reds.get(pid).join(",")}</span>`);
+      if (pid && evMaps.subIn.has(pid)) badges.push(`<span class="badg in">🔺 ${evMaps.subIn.get(pid).join(",")}</span>`);
+      if (pid && evMaps.subOut.has(pid)) badges.push(`<span class="badg out">🔻 ${evMaps.subOut.get(pid).join(",")}</span>`);
 
       return `
         <div class="playerRow">
@@ -803,10 +727,7 @@ function renderModalStatsReal(match, statsJ, eventsJ, lineupsJ){
       <div class="playerBlock">
         <div class="playerHeader">
           <div class="team">${teamName}</div>
-          <div class="smallMuted" style="display:flex;align-items:center;gap:8px">
-            <span style="width:10px;height:10px;border-radius:999px;background:${colorChip};display:inline-block"></span>
-            ${isHome ? "Local" : "Visita"}
-          </div>
+          <div class="smallMuted">${isHome ? "Local" : "Visita"}</div>
         </div>
 
         <div class="smallMuted" style="margin:6px 0 8px">Titulares</div>
@@ -829,17 +750,16 @@ function renderModalStatsReal(match, statsJ, eventsJ, lineupsJ){
     ${statCompact("Rojas", rH, rA)}
 
     <div class="statsTitle" style="margin-top:16px">Jugadores</div>
-    ${renderPlayersBlock("Local", homeLU, true)}
-    <div style="height:14px"></div>
-    ${renderPlayersBlock("Visita", awayLU, false)}
+    ${renderPlayersBlock(homeLU, true)}
+    <div style="height:12px"></div>
+    ${renderPlayersBlock(awayLU, false)}
   `;
 }
 
-/* ====== EVENTS TAB REAL ====== */
-function renderModalEventsReal(match, eventsJ){
+function renderModalEventsReal(eventsJ){
   const ev = (eventsJ && eventsJ.response) ? eventsJ.response : [];
   if (!ev.length){
-    tabEvents.innerHTML = `<div class="smallMuted">No hay eventos disponibles para este partido.</div>`;
+    tabEvents.innerHTML = `<div class="smallMuted">No hay eventos disponibles.</div>`;
     return;
   }
 
@@ -849,7 +769,7 @@ function renderModalEventsReal(match, eventsJ){
     .map(e=>{
       const min = e.time?.elapsed != null ? `${e.time.elapsed}'` : "—";
       const team = e.team?.name || "";
-      const player = e.player?.name || "";
+      const player = e.player?.name || team;
       const detail = e.detail || "";
       const type = e.type || "";
 
@@ -862,7 +782,7 @@ function renderModalEventsReal(match, eventsJ){
       return `
         <div class="playerRow" style="grid-template-columns: 64px 1fr 120px">
           <div class="pNo" style="text-align:left">${min} ${icon}</div>
-          <div class="pName" title="${team}">${player || team} — ${detail}</div>
+          <div class="pName" title="${team}">${player} — ${detail}</div>
           <div class="pBadges"><span class="badg">${type}</span></div>
         </div>
       `;
@@ -874,180 +794,47 @@ function renderModalEventsReal(match, eventsJ){
   `;
 }
 
-function renderModalStandings(match){
-  tabStandings.innerHTML = `<div class="smallMuted">Standings (siguiente paso): API standings por liga/season.</div>`;
+async function loadMatchDetails(match){
+  const fixture = match.fixtureId;
+  const [statsJ, eventsJ, lineupsJ] = await Promise.all([
+    api("statistics", { fixture }),
+    api("events", { fixture }),
+    api("lineups", { fixture })
+  ]);
+
+  renderModalStatsReal(match, statsJ, eventsJ, lineupsJ);
+  renderModalEventsReal(eventsJ);
+  tabStandings.innerHTML = `<div class="smallMuted">Standings: siguiente paso (API standings).</div>`;
 }
 
-/* ====== Main list logic (igual que ya traías, recortada aquí por espacio) ====== */
-function roundPretty(s){return s.replace("Regular Season -","Jornada").trim();}
-function statusEmoji(st){return st==="current"?"🟢":st==="future"?"🔵":"⚫";}
-function dayKeyFromISO(iso){ if(!iso)return"unknown"; const d=new Date(iso); return new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"}).format(d); }
-function dayTitleFromKey(key){ const [y,m,d]=key.split("-").map(Number); const dt=new Date(Date.UTC(y,m-1,d,12,0,0)); const pretty=new Intl.DateTimeFormat("es-MX",{timeZone:TZ,weekday:"long",day:"numeric",month:"long"}).format(dt); return pretty.charAt(0).toUpperCase()+pretty.slice(1); }
-function groupByDay(arr){ const map=new Map(); arr.forEach(m=>{const k=dayKeyFromISO(m.dateISO); if(!map.has(k))map.set(k,[]); map.get(k).push(m);}); const keys=[...map.keys()].sort((a,b)=>a==="unknown"?1:b==="unknown"?-1:a.localeCompare(b)); keys.forEach(k=>map.get(k).sort((a,b)=>(new Date(a.dateISO||0)).getTime()-(new Date(b.dateISO||0)).getTime())); return keys.map(k=>({dayKey:k,items:map.get(k)})); }
+function openMatchModal(match){
+  selectedMatch=match;
+  modalOverlay.classList.add("show");
+  document.body.style.overflow="hidden";
 
-const FINISHED=new Set(["FT","AET","PEN"]);
-function isRoundFinished(fixturesRaw){ if(!fixturesRaw.length)return false; return fixturesRaw.every(f=>FINISHED.has(f.fixture?.status?.short)); }
+  // blur & bar colors (bonitos + consistentes)
+  modalTop.style.setProperty("--homeLogoUrl", `url("${match.homeLogo}")`);
+  modalTop.style.setProperty("--awayLogoUrl", `url("${match.awayLogo}")`);
+  modalTop.style.setProperty("--homeBar", "rgba(239,68,68,.85)");
+  modalTop.style.setProperty("--awayBar", "rgba(96,165,250,.85)");
 
-async function getRoundsRaw(leagueKey){
-  if(roundsCache.has(leagueKey))return roundsCache.get(leagueKey);
-  const meta=LEAGUES[leagueKey];
-  const j=await api("rounds",{league:meta.id,season:SEASON});
-  const arr=j.response||[];
-  roundsCache.set(leagueKey,arr);
-  return arr;
-}
-async function fetchFixturesRawByRound(leagueKey, round){
-  const meta=LEAGUES[leagueKey];
-  const j=await api("fixtures",{league:meta.id,season:SEASON,round});
-  return j.response||[];
-}
-async function detectCurrentRound(leagueKey){
-  if(currentRoundCache.has(leagueKey))return currentRoundCache.get(leagueKey);
-  const roundsRaw=await getRoundsRaw(leagueKey);
-  if(!roundsRaw.length)return null;
-  let lo=0,hi=roundsRaw.length-1,ans=null;
-  while(lo<=hi){
-    const mid=Math.floor((lo+hi)/2);
-    const round=roundsRaw[mid];
-    const fixturesRaw=await fetchFixturesRawByRound(leagueKey,round);
-    const finished=isRoundFinished(fixturesRaw);
-    if(finished)lo=mid+1; else {ans=round;hi=mid-1;}
-  }
-  if(!ans)ans=roundsRaw[roundsRaw.length-1];
-  currentRoundCache.set(leagueKey,ans);
-  return ans;
-}
+  modalLeague.textContent=match.leagueName||LEAGUES[active].name;
+  modalHome.innerHTML=`${logoImg(match.homeLogo, match.home, "modalBigLogo")}<div class="tname">${match.home}</div>`;
+  modalAway.innerHTML=`<div class="tname">${match.away}</div>${logoImg(match.awayLogo, match.away, "modalBigLogo")}`;
 
-function applySearch(arr){
-  if(!query)return arr;
-  const q=query.toLowerCase();
-  return arr.filter(m=>m.home.toLowerCase().includes(q)||m.away.toLowerCase().includes(q));
-}
+  const scoreText=(match.status==="NS")?"—":`${match.h??0} – ${match.a??0}`;
+  modalScore.textContent=scoreText;
+  modalStatus.textContent=(match.status==="FT")?"Final":(match.status==="LIVE")?`En juego ${match.minute||""}`:"Próximo";
 
-function renderRoundSelector(){
-  roundSelect.innerHTML="";
-  rounds.forEach((r,i)=>{
-    const opt=document.createElement("option");
-    opt.value=String(i);
-    opt.textContent=`${statusEmoji(r.status)} ${roundPretty(r.round)} (${r.status==="current"?"Actual":r.status==="past"?"Pasada":"Futura"})`;
-    if(i===roundIndex)opt.selected=true;
-    roundSelect.appendChild(opt);
-  });
-  prevRoundBtn.disabled=(roundIndex<=0);
-  nextRoundBtn.disabled=(roundIndex>=rounds.length-1);
-}
-
-function card(m){
-  return `
-  <article class="match" data-fixture="${m.id}">
-    <div class="time">
-      <span class="kickoff">${m.time}</span>
-      ${badge(m.status)}
-      ${m.status==="LIVE"?`<span class="minute">${m.minute||""}</span>`:""}
-    </div>
-    <div class="broadcast">
-      ${logoImg(m.homeLogo, m.home + " logo")}
-      <div class="scoreWrap">
-        ${scoreHTML(m)}
-        <div class="subline">${sublineText(m)}</div>
-      </div>
-      ${logoImg(m.awayLogo, m.away + " logo")}
-    </div>
-  </article>`;
-}
-
-function render(arr){
-  const meta=LEAGUES[active];
-  const filtered=applySearch(arr);
-
-  elActive.textContent=meta.name;
-  elModeLabel.textContent=(mode==="round")?"JORNADA":"LIVE";
-  elTitle.textContent=`${meta.name} — ${(mode==="round")?"Jornada":"En vivo"}`;
-
-  elCount.textContent=String(filtered.length);
-  elLive.textContent=String(filtered.filter(x=>x.status==="LIVE").length);
-  elFt.textContent=String(filtered.filter(x=>x.status==="FT").length);
-  elUpdated.textContent=new Date().toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"});
-
-  if(filtered.length===0){
-    elMatches.innerHTML=`<div class="empty">No hay partidos para mostrar.</div>`;
-    return;
-  }
-
-  const grouped=groupByDay(filtered);
-  elMatches.innerHTML=grouped.map(g=>{
-    const title=g.dayKey==="unknown"?"Sin fecha":dayTitleFromKey(g.dayKey);
-    return `
-      <div class="dayHeader">
-        <div>
-          <div class="title">${title}</div>
-          <div class="sub">Partidos del día</div>
-        </div>
-        <div class="count">${g.items.length} partidos</div>
-      </div>
-      ${g.items.map(card).join("")}
-    `;
-  }).join("");
-
-  elMatches.querySelectorAll(".match").forEach(cardEl=>{
-    cardEl.addEventListener("click", ()=>{
-      if(lastClickedEl)lastClickedEl.classList.remove("selected");
-      cardEl.classList.add("selected");
-      lastClickedEl=cardEl;
-
-      const id=cardEl.getAttribute("data-fixture");
-      const m=currentData.find(x=>x.id===id);
-      if(m)openMatchModal(m);
-    });
-  });
-
-  filtered.forEach(m=>{
-    if(m.status!=="NS" && typeof m.h==="number" && typeof m.a==="number"){
-      const key=`${m.h}-${m.a}`;
-      const prev=lastScores.get(m.id);
-      if(prev && prev!==key)animateScore(m.id);
-      lastScores.set(m.id,key);
-    }
+  renderModalLoading();
+  setActiveModalTab("stats");
+  loadMatchDetails(match).catch(err=>{
+    tabStats.innerHTML = `<div class="smallMuted">No se pudo cargar stats/jugadores.<br>${String(err)}</div>`;
+    tabEvents.innerHTML = `<div class="smallMuted">No se pudo cargar eventos.</div>`;
   });
 }
 
-async function loadRoundByIndex(idx){
-  roundIndex=idx;
-  renderRoundSelector();
-  const meta=LEAGUES[active];
-  const r=rounds[roundIndex];
-  elRoundLabel.textContent=`${roundPretty(r.round)} (${r.status==="current"?"Actual":r.status==="past"?"Pasada":"Futura"})`;
-  elNote.textContent=`Cargando ${roundPretty(r.round)}…`;
-  const j=await api("fixtures",{league:meta.id,season:SEASON,round:r.round});
-  currentData=mapFixtures(j);
-  elNote.textContent="OK.";
-  render(currentData);
-}
-
-async function refresh(){
-  const meta=LEAGUES[active];
-  elNote.textContent="Cargando…";
-
-  if(mode==="live"){
-    elRoundLabel.textContent="—";
-    const j=await api("fixtures",{league:meta.id,season:SEASON,live:"all"});
-    currentData=mapFixtures(j);
-    elNote.textContent="OK: LIVE.";
-    render(currentData);
-    return;
-  }
-
-  const roundsRaw=await getRoundsRaw(active);
-  const currentRound=await detectCurrentRound(active);
-  const currentIdx=Math.max(0, roundsRaw.indexOf(currentRound));
-
-  rounds=roundsRaw.map((round,idx)=>({ round,index:idx,status: idx<currentIdx?"past":(idx===currentIdx?"current":"future") }));
-  roundIndex=currentIdx;
-  renderRoundSelector();
-  await loadRoundByIndex(roundIndex);
-}
-
-// UI
+// UI wires
 document.querySelectorAll(".tab").forEach(tab=>{
   tab.addEventListener("click", async ()=>{
     document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected","false"));
@@ -1067,27 +854,6 @@ modeBtn.addEventListener("click", async ()=>{
 });
 refreshBtn.addEventListener("click", ()=> refresh());
 setInterval(()=>{ if(mode==="live")refresh(); }, 60000);
-
-// modal tab logic
-function setActiveModalTab(key){
-  document.querySelectorAll(".modalTab").forEach(b=>b.classList.remove("active"));
-  document.querySelector(`.modalTab[data-tab="${key}"]`).classList.add("active");
-  tabStats.style.display=(key==="stats")?"block":"none";
-  tabEvents.style.display=(key==="events")?"block":"none";
-  tabStandings.style.display=(key==="standings")?"block":"none";
-}
-
-document.querySelectorAll(".modalTab").forEach(btn=>btn.addEventListener("click", ()=> setActiveModalTab(btn.dataset.tab)));
-
-closeModalBtn.addEventListener("click", closeMatchModal);
-modalOverlay.addEventListener("click",(e)=>{ if(e.target===modalOverlay)closeMatchModal(); });
-document.addEventListener("keydown",(e)=>{ if(e.key==="Escape" && modalOverlay.classList.contains("show"))closeMatchModal(); });
-
-function closeMatchModal(){
-  modalOverlay.classList.remove("show");
-  document.body.style.overflow="";
-  selectedMatch=null;
-}
 
 refresh();
 </script>
