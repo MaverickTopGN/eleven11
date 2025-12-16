@@ -4,16 +4,16 @@ exports.handler = async (event) => {
     const endpoint = q.endpoint || "fixtures"; // fixtures | rounds | events | lineups | statistics | standings
 
     const league = q.league || "39";
-    const season = q.season || "2024";
+    const season = q.season || "2025";
     const round = q.round;
     const timezone = q.timezone || "America/Mexico_City";
 
-    const fixture = q.fixture; // fixture id (para events/lineups/statistics)
-    const live = q.live;       // "all"
-    const next = q.next;       // "10"
-    const date = q.date;       // YYYY-MM-DD
-    const from = q.from;       // YYYY-MM-DD
-    const to = q.to;           // YYYY-MM-DD
+    const fixture = q.fixture;
+    const live = q.live;
+    const next = q.next;
+    const date = q.date;
+    const from = q.from;
+    const to = q.to;
 
     let apiUrl;
 
@@ -49,10 +49,7 @@ exports.handler = async (event) => {
       else if (round) apiUrl.searchParams.set("round", round);
       else if (next) apiUrl.searchParams.set("next", next);
       else if (date) apiUrl.searchParams.set("date", date);
-      else if (from && to) {
-        apiUrl.searchParams.set("from", from);
-        apiUrl.searchParams.set("to", to);
-      }
+      else if (from && to) { apiUrl.searchParams.set("from", from); apiUrl.searchParams.set("to", to); }
     }
 
     const r = await fetch(apiUrl.toString(), {
@@ -65,7 +62,7 @@ exports.handler = async (event) => {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        "Cache-Control": "public, max-age=20"
+        "Cache-Control": "public, max-age=15"
       },
       body: JSON.stringify(data)
     };
