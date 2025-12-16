@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Marcadores — Pro TV (API-Football)</title>
+<title>Marcadores — Pro TV (Jornada Auto)</title>
 <style>
 :root{
   --bg:#06110b; --bg2:#0a1a11; --txt:#eafff2; --muted:#a8c7b7;
@@ -33,7 +33,7 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px;ma
   display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.04);
   border:1px solid var(--line);padding:10px 12px;border-radius:999px;
 }
-.pill input{background:transparent;border:0;outline:0;color:var(--txt);width:min(280px,56vw);font-weight:800}
+.pill input{background:transparent;border:0;outline:0;color:var(--txt);width:min(260px,52vw);font-weight:800}
 
 .tabs{
   display:flex;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--line);
@@ -55,7 +55,6 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px;ma
 .panel h2{margin:0 0 10px;color:var(--muted);font-size:14px;text-transform:uppercase;letter-spacing:.3px}
 .list{display:flex;flex-direction:column;gap:12px}
 
-/* MATCH CARD */
 .match{
   display:grid;grid-template-columns:170px 1fr 130px;gap:12px;align-items:center;
   padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);
@@ -82,11 +81,9 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px;ma
 .badge.ft{color:var(--good);border-color:rgba(52,211,153,.45);background:rgba(52,211,153,.10)}
 .badge.ns{color:var(--ns);border-color:rgba(167,243,208,.40);background:rgba(167,243,208,.10)}
 .minute{padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);font-weight:950}
-
 @keyframes dotBlink{0%,49%{opacity:1}50%,100%{opacity:.25}}
 .liveDot{width:7px;height:7px;border-radius:999px;background:var(--live);animation:dotBlink 1.2s linear infinite;box-shadow:0 0 12px rgba(96,165,250,.55)}
 
-/* BROADCAST CENTER */
 .broadcast{
   display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;
   padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.08);
@@ -101,7 +98,6 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px;ma
 .name{font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
 @media(max-width:560px){.logoBig{width:42px;height:42px}.name{max-width:150px}}
 
-/* SCORE CENTER + SUBLINE */
 .scoreWrap{display:flex;flex-direction:column;align-items:center;gap:6px}
 .scoreCenter{
   display:flex;align-items:center;justify-content:center;gap:10px;
@@ -119,7 +115,6 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px;ma
 @keyframes scoreFlip{0%{transform:translateY(0) scale(1);opacity:1}40%{transform:translateY(-4px) scale(1.02)}100%{transform:translateY(0) scale(1);opacity:1}}
 .scoreFlip{animation:scoreFlip .35s ease-out}
 
-/* RIGHT ACTIONS */
 .actions{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
 .mini{
   padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);
@@ -132,9 +127,7 @@ header{display:flex;justify-content:space-between;align-items:center;gap:12px;ma
 .v{font-weight:1000}
 .small{color:var(--muted);font-size:12px;line-height:1.45;margin-top:10px}
 footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
-.empty{
-  padding:16px;border-radius:16px;border:1px dashed rgba(255,255,255,.18);color:var(--muted);text-align:center
-}
+.empty{padding:16px;border-radius:16px;border:1px dashed rgba(255,255,255,.18);color:var(--muted);text-align:center}
 </style>
 </head>
 
@@ -145,15 +138,13 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
       <div class="logo"></div>
       <div>
         <div style="font-weight:1000;letter-spacing:.2px">Marcadores — Pro TV</div>
-        <div style="color:var(--muted);font-size:12px">Conectado a API-Football (API-Sports)</div>
+        <div style="color:var(--muted);font-size:12px">Jornada automática + LIVE</div>
       </div>
     </div>
 
     <div class="controls">
-      <div class="pill" title="Buscar equipo">
-        🔎 <input id="search" placeholder="Buscar: City, Madrid, PSG…" autocomplete="off"/>
-      </div>
-      <button class="btn" id="modeBtn" title="Cambia entre LIVE y HOY">Modo: HOY</button>
+      <div class="pill"><span>🔎</span><input id="search" placeholder="Buscar equipo…" /></div>
+      <button class="btn" id="modeBtn">Modo: JORNADA</button>
       <button class="btn primary" id="refreshBtn">↻ Actualizar</button>
     </div>
   </header>
@@ -166,41 +157,46 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
 
   <div class="grid">
     <section class="panel">
-      <h2 id="leagueTitle">Premier League — Resultados</h2>
+      <h2 id="leagueTitle">Premier League — Jornada (Auto)</h2>
       <div id="matches" class="list"></div>
     </section>
 
     <aside class="panel">
       <h2>Resumen</h2>
       <div class="kv"><div class="k">Liga activa</div><div class="v" id="activeLeague">Premier League</div></div>
+      <div class="kv"><div class="k">Modo</div><div class="v" id="modeLabel">JORNADA</div></div>
+      <div class="kv"><div class="k">Jornada detectada</div><div class="v" id="roundLabel">—</div></div>
       <div class="kv"><div class="k">Partidos</div><div class="v" id="count">0</div></div>
       <div class="kv"><div class="k">LIVE</div><div class="v" id="liveCount">0</div></div>
       <div class="kv"><div class="k">FT</div><div class="v" id="ftCount">0</div></div>
       <div class="kv"><div class="k">Última</div><div class="v" id="updated">—</div></div>
-      <div class="small" id="note">
-        Si no te aparecen partidos, puede ser porque hoy no hay juegos en esa liga. Prueba “Modo: LIVE”.
-      </div>
+      <div class="small" id="note">Detectando jornada actual…</div>
     </aside>
   </div>
 
-  <footer>Vista PRO TV — banner único, sin info duplicada</footer>
+  <footer>Pro TV — jornada automática por liga</footer>
 </div>
 
 <script>
-/* ===== League IDs (API-Football) ===== */
 const LEAGUES = {
-  EPL: { name: "Premier League", id: 39 },
-  LL:  { name: "LaLiga", id: 140 },
-  L1:  { name: "Ligue 1", id: 61 }
+  EPL: { name:"Premier League", id:39 },
+  LL:  { name:"LaLiga", id:140 },
+  L1:  { name:"Ligue 1", id:61 }
 };
 
-/* ===== State ===== */
-let active = "EPL";
-let query = "";
-let mode = "today"; // today | live
-let lastScores = new Map(); // fixtureId -> "h-a"
+// Temporada: para 2024/25 normalmente es 2024.
+// Si un día te falla, lo ajustamos por liga.
+const SEASON = 2024;
+const TZ = "America/Mexico_City";
 
-/* ===== DOM ===== */
+let active = "EPL";
+let mode = "round"; // round | live
+let query = "";
+let currentData = [];
+let currentRoundByLeague = new Map(); // leagueKey -> round string
+let roundsCache = new Map();          // leagueKey -> rounds array
+let lastScores = new Map();
+
 const elMatches = document.getElementById("matches");
 const elTitle = document.getElementById("leagueTitle");
 const elActive = document.getElementById("activeLeague");
@@ -208,16 +204,16 @@ const elCount = document.getElementById("count");
 const elLive = document.getElementById("liveCount");
 const elFt = document.getElementById("ftCount");
 const elUpdated = document.getElementById("updated");
+const elModeLabel = document.getElementById("modeLabel");
+const elRoundLabel = document.getElementById("roundLabel");
 const elNote = document.getElementById("note");
+const modeBtn = document.getElementById("modeBtn");
 
-/* ===== Helpers ===== */
 function normalizeStatus(short){
-  // API uses many short codes: NS, FT, HT, 1H, 2H, ET, PEN, etc.
   if (!short) return "NS";
   if (short === "FT" || short === "AET" || short === "PEN") return "FT";
   if (short === "NS") return "NS";
-  // anything else = treat as LIVE for our UI (HT, 1H, 2H, ET, etc.)
-  return "LIVE";
+  return "LIVE"; // HT, 1H, 2H, ET, etc
 }
 function periodFromShort(short){
   if (!short) return "";
@@ -254,18 +250,16 @@ function logoImg(src, alt){
   return `<img class="logoBig" src="${src || fallback}" alt="${alt}" loading="lazy"
     onerror="this.onerror=null;this.src='${fallback}'">`;
 }
+function animateScore(fixtureId){
+  const box = document.querySelector(`[data-scorebox="${fixtureId}"]`);
+  if(!box) return;
+  box.classList.remove("scoreFlip");
+  void box.offsetWidth;
+  box.classList.add("scoreFlip");
+}
 
-/* ===== API Load via Netlify Function ===== */
-async function loadFromAPI(leagueId){
-  // season: usa la actual (ajusta si quieres)
-  const season = new Date().getFullYear(); // 2025 etc.
-  const url = `/.netlify/functions/football?league=${leagueId}&season=${season}&mode=${mode}`;
-
-  const res = await fetch(url);
-  const json = await res.json();
-
+function mapFixtures(json){
   const fixtures = (json && json.response) ? json.response : [];
-
   return fixtures.map(f => {
     const short = f.fixture?.status?.short;
     const status = normalizeStatus(short);
@@ -289,10 +283,86 @@ async function loadFromAPI(leagueId){
   });
 }
 
-/* ===== Render ===== */
+async function api(endpoint, params){
+  const u = new URL("/.netlify/functions/football", location.origin);
+  u.searchParams.set("endpoint", endpoint);
+  u.searchParams.set("timezone", TZ);
+  Object.entries(params).forEach(([k,v])=>{
+    if (v !== undefined && v !== null && v !== "") u.searchParams.set(k, String(v));
+  });
+  const res = await fetch(u.toString());
+  return res.json();
+}
+
+// ====== Jornada automática (búsqueda binaria) ======
+const FINISHED = new Set(["FT","AET","PEN"]);
+
+function isRoundFinished(fixtures){
+  if (!fixtures.length) return false; // si no trae nada, no asumimos finished
+  return fixtures.every(f => {
+    const short = f.fixture?.status?.short;
+    return FINISHED.has(short);
+  });
+}
+
+async function getRounds(leagueKey){
+  if (roundsCache.has(leagueKey)) return roundsCache.get(leagueKey);
+  const meta = LEAGUES[leagueKey];
+  const j = await api("rounds", { league: meta.id, season: SEASON });
+  const rounds = j.response || [];
+  roundsCache.set(leagueKey, rounds);
+  return rounds;
+}
+
+async function fetchFixturesByRound(leagueKey, round){
+  const meta = LEAGUES[leagueKey];
+  return api("fixtures", { league: meta.id, season: SEASON, round });
+}
+
+async function detectCurrentRound(leagueKey){
+  // cache
+  if (currentRoundByLeague.has(leagueKey)) return currentRoundByLeague.get(leagueKey);
+
+  const rounds = await getRounds(leagueKey);
+  if (!rounds.length) return null;
+
+  // Búsqueda binaria para encontrar la PRIMERA jornada que NO esté completamente finalizada
+  let lo = 0, hi = rounds.length - 1;
+  let ans = null;
+
+  while (lo <= hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    const round = rounds[mid];
+
+    const raw = await fetchFixturesByRound(leagueKey, round);
+    const fixturesRaw = raw.response || [];
+
+    const finished = isRoundFinished(fixturesRaw);
+
+    if (finished) {
+      lo = mid + 1;        // buscamos más adelante
+    } else {
+      ans = round;         // posible jornada actual
+      hi = mid - 1;        // buscamos si hay una anterior también no terminada
+    }
+  }
+
+  // Si por alguna razón todas están finished, regresamos la última
+  if (!ans) ans = rounds[rounds.length - 1];
+
+  currentRoundByLeague.set(leagueKey, ans);
+  return ans;
+}
+
+function applySearch(arr){
+  if(!query) return arr;
+  const q = query.toLowerCase();
+  return arr.filter(m => (m.home.toLowerCase().includes(q) || m.away.toLowerCase().includes(q)));
+}
+
 function card(m){
   return `
-  <article class="match" data-match="${m.id}">
+  <article class="match">
     <div class="meta">
       <div class="time">
         <span class="kickoff">${m.time}</span>
@@ -325,112 +395,113 @@ function card(m){
   </article>`;
 }
 
-function animateScore(fixtureId){
-  const box = document.querySelector(`[data-scorebox="${fixtureId}"]`);
-  if(!box) return;
-  box.classList.remove("scoreFlip");
-  void box.offsetWidth;
-  box.classList.add("scoreFlip");
-}
-
-let currentData = [];
-
-function applySearch(arr){
-  if(!query) return arr;
-  const q = query.toLowerCase();
-  return arr.filter(m => (m.home.toLowerCase().includes(q) || m.away.toLowerCase().includes(q)));
-}
-
 function render(arr){
   const meta = LEAGUES[active];
   const filtered = applySearch(arr);
 
-  elTitle.textContent = `${meta.name} — Resultados`;
   elActive.textContent = meta.name;
+  elModeLabel.textContent = (mode === "round") ? "JORNADA" : "LIVE";
+  elTitle.textContent = `${meta.name} — ${(mode === "round") ? "Jornada (Auto)" : "En vivo"}`;
 
   elCount.textContent = String(filtered.length);
   elLive.textContent = String(filtered.filter(x=>x.status==="LIVE").length);
   elFt.textContent = String(filtered.filter(x=>x.status==="FT").length);
-  elUpdated.textContent = new Date().toLocaleString("es-MX",{hour:"2-digit",minute:"2-digit"});
+  elUpdated.textContent = new Date().toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"});
 
   if(filtered.length === 0){
-    elMatches.innerHTML = `<div class="empty">No hay partidos para mostrar. Prueba “Modo: LIVE” o cambia de liga.</div>`;
+    elMatches.innerHTML = `<div class="empty">No hay partidos para mostrar en este modo.</div>`;
     return;
   }
+
   elMatches.innerHTML = filtered.map(card).join("");
 
-  // bind buttons
+  // Bind actions
   elMatches.querySelectorAll(".mini").forEach(b=>{
     b.addEventListener("click",(e)=>{
       const a=e.currentTarget.dataset.action;
-      if(a==="details") alert("Demo: aquí abriríamos eventos, alineaciones, etc.");
-      if(a==="follow") alert("Demo: seguimiento/notificaciones.");
+      if(a==="details") alert("Demo: modal con eventos, alineaciones, etc.");
+      if(a==="follow") alert("Demo: seguimiento/alertas.");
     });
+  });
+
+  // Animaciones de score si cambia
+  filtered.forEach(m=>{
+    if (m.status !== "NS" && typeof m.h === "number" && typeof m.a === "number") {
+      const key = `${m.h}-${m.a}`;
+      const prev = lastScores.get(m.id);
+      if (prev && prev !== key) animateScore(m.id);
+      lastScores.set(m.id, key);
+    }
   });
 }
 
 async function refresh(){
   const meta = LEAGUES[active];
-  elNote.textContent = `Cargando ${meta.name} (${mode.toUpperCase()})…`;
+  elNote.textContent = "Cargando…";
 
   try{
-    const data = await loadFromAPI(meta.id);
-    // Animar si cambió el score
-    data.forEach(m=>{
-      if(m.status !== "NS" && typeof m.h === "number" && typeof m.a === "number"){
-        const key = `${m.h}-${m.a}`;
-        const prev = lastScores.get(m.id);
-        if(prev && prev !== key){
-          // marcar para animación después de render
-          m._scoreChanged = true;
-        }
-        lastScores.set(m.id, key);
-      }
-    });
+    if (mode === "live") {
+      elRoundLabel.textContent = "—";
+      const j = await api("fixtures", { league: meta.id, season: SEASON, live: "all" });
+      currentData = mapFixtures(j);
+      elNote.textContent = "OK: LIVE.";
+      render(currentData);
+      return;
+    }
 
-    currentData = data;
+    // mode === "round"
+    const round = await detectCurrentRound(active);
+    elRoundLabel.textContent = round ? round.replace("Regular Season -", "Jornada") : "—";
+
+    if (!round) {
+      currentData = [];
+      elNote.textContent = "No se pudo detectar jornada.";
+      render(currentData);
+      return;
+    }
+
+    const j = await api("fixtures", { league: meta.id, season: SEASON, round: round });
+    currentData = mapFixtures(j);
+
+    elNote.textContent = "OK: Jornada automática.";
     render(currentData);
 
-    // disparar animaciones score-changed
-    data.filter(x=>x._scoreChanged).forEach(x=>animateScore(x.id));
-
-    elNote.textContent = `OK: ${meta.name} (${mode.toUpperCase()}).`;
-  }catch(err){
-    elMatches.innerHTML = `<div class="empty">Error cargando API. Revisa que en Netlify exista APISPORTS_KEY y la function.</div>`;
+  } catch(err){
+    elMatches.innerHTML = `<div class="empty">Error cargando datos. Revisa Netlify (Functions/Logs) y la API key.</div>`;
     elNote.textContent = `Error: ${String(err)}`;
   }
 }
 
-/* ===== Tabs (ya funcionando) ===== */
+// Tabs
 document.querySelectorAll(".tab").forEach(tab=>{
   tab.addEventListener("click", ()=>{
     document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected","false"));
     tab.setAttribute("aria-selected","true");
     active = tab.dataset.league;
+
+    // cada liga puede tener jornada diferente; mantenemos cache por liga
     refresh();
   });
 });
 
-/* ===== Search ===== */
+// Search
 document.getElementById("search").addEventListener("input",(e)=>{
   query = e.target.value.trim();
   render(currentData);
 });
 
-/* ===== Mode toggle ===== */
-document.getElementById("modeBtn").addEventListener("click", (e)=>{
-  mode = (mode === "today") ? "live" : "today";
-  e.currentTarget.textContent = `Modo: ${mode === "today" ? "HOY" : "LIVE"}`;
+// Mode toggle
+modeBtn.addEventListener("click", ()=>{
+  mode = (mode === "round") ? "live" : "round";
+  modeBtn.textContent = `Modo: ${mode === "round" ? "JORNADA" : "LIVE"}`;
   refresh();
 });
 
-/* ===== Refresh ===== */
+// Manual refresh
 document.getElementById("refreshBtn").addEventListener("click", ()=> refresh());
 
-/* Auto-refresh inteligente: solo cuando estás en LIVE */
-setInterval(()=>{
-  if(mode === "live") refresh();
-}, 60000); // cada 60s
+// Auto-refresh: solo en LIVE
+setInterval(()=>{ if (mode === "live") refresh(); }, 60000);
 
 refresh();
 </script>
