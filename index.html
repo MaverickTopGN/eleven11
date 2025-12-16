@@ -67,6 +67,31 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
 .panel h2{margin:0 0 10px;color:var(--muted);font-size:14px;text-transform:uppercase;letter-spacing:.3px}
 .list{display:flex;flex-direction:column;gap:12px}
 
+/* ✅ Day header (por día) */
+.dayHeader{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.12);
+  box-shadow: 0 10px 28px rgba(0,0,0,.18);
+}
+.dayHeader .left{
+  display:flex; flex-direction:column; gap:2px;
+}
+.dayHeader .title{
+  font-weight:1000; letter-spacing:.2px;
+}
+.dayHeader .sub{
+  color: var(--muted); font-size:12px; font-weight:900;
+}
+.dayHeader .count{
+  color: var(--muted); font-weight:900; font-size:12px;
+  padding:6px 10px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+}
+
 .match{
   display:grid;grid-template-columns:170px 1fr 130px;gap:12px;align-items:center;
   padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);
@@ -155,7 +180,7 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
       <div class="logo"></div>
       <div>
         <div style="font-weight:1000;letter-spacing:.2px">Marcadores — Pro TV</div>
-        <div style="color:var(--muted);font-size:12px">Calendario de Jornadas (pasadas/actuales/futuras)</div>
+        <div style="color:var(--muted);font-size:12px">Jornadas + días de juego</div>
       </div>
     </div>
 
@@ -202,7 +227,7 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
     </aside>
   </div>
 
-  <footer>Pro TV — round (jornada) seleccionable por el usuario</footer>
+  <footer>Pro TV — jornada seleccionable + separación por día</footer>
 </div>
 
 <script>
@@ -212,18 +237,24 @@ const LEAGUES = {
   L1:  { name:"Ligue 1", id:61 }
 };
 
-// Para 2024/25 normalmente es 2024
-const SEASON = 2025;
+// ✅ Temporada auto (EU: inicia aprox julio/agosto)
+function getCurrentSeason(){
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth() + 1;
+  return (m >= 7) ? y : (y - 1);
+}
+const SEASON = getCurrentSeason();
 const TZ = "America/Mexico_City";
 
 let active = "EPL";
 let mode = "round"; // round | live
 let query = "";
 let currentData = [];
-let rounds = [];     // [{round,index,status}]
-let roundIndex = 0;  // selected index
-let roundsCache = new Map(); // leagueKey -> array of round strings
-let currentRoundCache = new Map(); // leagueKey -> current round string
+let rounds = [];
+let roundIndex = 0;
+let roundsCache = new Map();
+let currentRoundCache = new Map();
 let lastScores = new Map();
 
 const elMatches = document.getElementById("matches");
@@ -300,9 +331,13 @@ function mapFixtures(json){
     const elapsed = f.fixture?.status?.elapsed;
     const added = f.fixture?.status?.extra;
 
+    // Guardamos fecha completa para agrupar por día
+    const dateISO = f.fixture?.date || null;
+
     return {
       id: String(f.fixture?.id),
-      time: f.fixture?.date ? new Date(f.fixture.date).toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"}) : "--:--",
+      dateISO,
+      time: dateISO ? new Date(dateISO).toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"}) : "--:--",
       status,
       minute: (status === "LIVE" && typeof elapsed === "number") ? `${elapsed}'` : "",
       period: periodFromShort(short),
@@ -312,8 +347,7 @@ function mapFixtures(json){
       homeLogo: f.teams?.home?.logo || "",
       awayLogo: f.teams?.away?.logo || "",
       h: f.goals?.home,
-      a: f.goals?.away,
-      _short: short
+      a: f.goals?.away
     };
   });
 }
@@ -335,7 +369,6 @@ function isRoundFinished(fixturesRaw){
   if (!fixturesRaw.length) return false;
   return fixturesRaw.every(f => FINISHED.has(f.fixture?.status?.short));
 }
-
 async function getRoundsRaw(leagueKey){
   if (roundsCache.has(leagueKey)) return roundsCache.get(leagueKey);
   const meta = LEAGUES[leagueKey];
@@ -344,28 +377,23 @@ async function getRoundsRaw(leagueKey){
   roundsCache.set(leagueKey, arr);
   return arr;
 }
-
 async function fetchFixturesRawByRound(leagueKey, round){
   const meta = LEAGUES[leagueKey];
   const j = await api("fixtures", { league: meta.id, season: SEASON, round });
   return j.response || [];
 }
-
-// búsqueda binaria: primera jornada que NO está completamente terminada
 async function detectCurrentRound(leagueKey){
   if (currentRoundCache.has(leagueKey)) return currentRoundCache.get(leagueKey);
 
   const roundsRaw = await getRoundsRaw(leagueKey);
   if (!roundsRaw.length) return null;
 
-  let lo = 0, hi = roundsRaw.length - 1;
-  let ans = null;
-
+  // primera jornada NO completamente finalizada (binaria)
+  let lo = 0, hi = roundsRaw.length - 1, ans = null;
   while (lo <= hi) {
     const mid = Math.floor((lo + hi) / 2);
     const round = roundsRaw[mid];
     const fixturesRaw = await fetchFixturesRawByRound(leagueKey, round);
-
     const finished = isRoundFinished(fixturesRaw);
     if (finished) lo = mid + 1;
     else { ans = round; hi = mid - 1; }
@@ -394,9 +422,49 @@ function renderRoundSelector(){
     if (i === roundIndex) opt.selected = true;
     roundSelect.appendChild(opt);
   });
-
   prevRoundBtn.disabled = (roundIndex <= 0);
   nextRoundBtn.disabled = (roundIndex >= rounds.length - 1);
+}
+
+// -------- Agrupar por día (✅ lo nuevo) --------
+function dayKeyFromISO(iso){
+  if (!iso) return "unknown";
+  // clave YYYY-MM-DD (estable)
+  const d = new Date(iso);
+  return new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year:"numeric", month:"2-digit", day:"2-digit" }).format(d);
+}
+function dayTitleFromKey(yyyy_mm_dd){
+  // convierte "2025-12-16" a "martes 16 de diciembre"
+  const [y,m,d] = yyyy_mm_dd.split("-").map(Number);
+  const dt = new Date(Date.UTC(y, m-1, d, 12, 0, 0)); // noon UTC para evitar desfases raros
+  const pretty = new Intl.DateTimeFormat("es-MX", { timeZone: TZ, weekday:"long", day:"numeric", month:"long" }).format(dt);
+  return pretty.charAt(0).toUpperCase() + pretty.slice(1);
+}
+function groupByDay(arr){
+  const map = new Map();
+  arr.forEach(m=>{
+    const key = dayKeyFromISO(m.dateISO);
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(m);
+  });
+
+  // ordenar keys (unknown al final)
+  const keys = [...map.keys()].sort((a,b)=>{
+    if (a === "unknown") return 1;
+    if (b === "unknown") return -1;
+    return a.localeCompare(b);
+  });
+
+  // ordenar partidos dentro del día por hora
+  keys.forEach(k=>{
+    map.get(k).sort((a,b)=>{
+      const ta = a.dateISO ? new Date(a.dateISO).getTime() : 0;
+      const tb = b.dateISO ? new Date(b.dateISO).getTime() : 0;
+      return ta - tb;
+    });
+  });
+
+  return keys.map(k=>({ dayKey:k, items: map.get(k) }));
 }
 
 // -------- Render partidos --------
@@ -439,6 +507,7 @@ function card(m){
     </div>
   </article>`;
 }
+
 function render(arr){
   const meta = LEAGUES[active];
   const filtered = applySearch(arr);
@@ -457,7 +526,22 @@ function render(arr){
     return;
   }
 
-  elMatches.innerHTML = filtered.map(card).join("");
+  // ✅ Aquí va la separación por días (solo en modo jornada; en LIVE también se ve bien)
+  const grouped = groupByDay(filtered);
+
+  elMatches.innerHTML = grouped.map(g=>{
+    const title = g.dayKey === "unknown" ? "Sin fecha" : dayTitleFromKey(g.dayKey);
+    return `
+      <div class="dayHeader">
+        <div class="left">
+          <div class="title">${title}</div>
+          <div class="sub">Partidos del día</div>
+        </div>
+        <div class="count">${g.items.length} partidos</div>
+      </div>
+      ${g.items.map(card).join("")}
+    `;
+  }).join("");
 
   // bind actions
   elMatches.querySelectorAll(".mini").forEach(b=>{
@@ -509,7 +593,6 @@ async function refresh(){
     return;
   }
 
-  // mode === round
   const roundsRaw = await getRoundsRaw(active);
   const currentRound = await detectCurrentRound(active);
 
@@ -520,7 +603,6 @@ async function refresh(){
     status: idx < currentIdx ? "past" : (idx === currentIdx ? "current" : "future")
   }));
 
-  // default: jornada actual
   roundIndex = currentIdx;
   renderRoundSelector();
   await loadRoundByIndex(roundIndex);
