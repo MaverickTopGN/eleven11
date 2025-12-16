@@ -14,7 +14,7 @@ exports.handler = async (event) => {
 
     const response = await fetch(apiUrl.toString(), {
       headers: {
-        "x-apisports-key": APISPORTS_KEY
+        "x-apisports-key": process.env.APISPORTS_KEY
       }
     });
 
