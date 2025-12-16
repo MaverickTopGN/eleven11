@@ -5,15 +5,14 @@ exports.handler = async (event) => {
 
     const league = q.league || "39";
     const season = q.season || "2024";
-    const round = q.round; // ej: "Regular Season - 17"
+    const round = q.round; // "Regular Season - 17"
     const timezone = q.timezone || "America/Mexico_City";
 
-    // Extras opcionales
-    const live = q.live;       // "all" para live
-    const next = q.next;       // "10"
-    const date = q.date;       // YYYY-MM-DD
-    const from = q.from;       // YYYY-MM-DD
-    const to = q.to;           // YYYY-MM-DD
+    const live = q.live; // "all"
+    const next = q.next; // "10"
+    const date = q.date; // YYYY-MM-DD
+    const from = q.from; // YYYY-MM-DD
+    const to = q.to;     // YYYY-MM-DD
 
     let apiUrl;
 
@@ -27,16 +26,12 @@ exports.handler = async (event) => {
       apiUrl.searchParams.set("season", season);
       apiUrl.searchParams.set("timezone", timezone);
 
-      // Prioridad de filtros (para evitar mezclas raras)
-      if (live) {
-        apiUrl.searchParams.set("live", live); // live=all
-      } else if (round) {
-        apiUrl.searchParams.set("round", round);
-      } else if (next) {
-        apiUrl.searchParams.set("next", next);
-      } else if (date) {
-        apiUrl.searchParams.set("date", date);
-      } else if (from && to) {
+      // prioridad (no mezclar filtros)
+      if (live) apiUrl.searchParams.set("live", live);
+      else if (round) apiUrl.searchParams.set("round", round);
+      else if (next) apiUrl.searchParams.set("next", next);
+      else if (date) apiUrl.searchParams.set("date", date);
+      else if (from && to) {
         apiUrl.searchParams.set("from", from);
         apiUrl.searchParams.set("to", to);
       }
