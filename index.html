@@ -34,17 +34,11 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
 .brandTitle .h{font-weight:900;font-size:16px;line-height:1.15}
 .brandTitle .p{color:var(--muted);font-size:12px;font-weight:600}
 .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-
-.btn{
-  cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);
-  border-radius:999px;padding:9px 12px;font-weight:800;font-size:13px;
-  box-shadow:0 10px 28px rgba(0,0,0,.18);
-}
+.btn{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);border-radius:999px;padding:9px 12px;font-weight:800;font-size:13px}
 .btn.primary{border-color:rgba(167,243,208,.35);background:rgba(167,243,208,.10)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .select{
-  appearance:none;
-  padding-right:34px;
+  appearance:none;padding-right:34px;
   background-image:linear-gradient(45deg,transparent 50%,rgba(255,255,255,.55) 50%),linear-gradient(135deg,rgba(255,255,255,.55) 50%,transparent 50%);
   background-position:calc(100% - 18px) calc(50% - 3px),calc(100% - 12px) calc(50% - 3px);
   background-size:6px 6px,6px 6px;background-repeat:no-repeat
@@ -58,8 +52,17 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
 .dot.current{background:rgba(52,211,153,.78)}
 .dot.future{background:rgba(96,165,250,.75)}
 
-.tabs{display:flex;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin:14px 0;box-shadow:var(--shadow);overflow:auto}
-.tab{padding:10px 12px;border-radius:999px;color:var(--muted);font-weight:900;font-size:13px;cursor:pointer;border:1px solid transparent;background:transparent;white-space:nowrap}
+.tabs{
+  display:flex;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--line);
+  border-radius:var(--radius);padding:10px;margin:14px 0;box-shadow:var(--shadow);
+  overflow:auto;
+  scroll-snap-type:x mandatory;
+}
+.tab{
+  padding:10px 12px;border-radius:999px;color:var(--muted);font-weight:900;font-size:13px;cursor:pointer;
+  border:1px solid transparent;background:transparent;white-space:nowrap;
+  scroll-snap-align:start;
+}
 .tab[aria-selected="true"]{color:var(--txt);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
 
 .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
@@ -68,13 +71,11 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
 .panel h2{margin:0 0 10px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.14em;font-weight:900}
 .list{display:flex;flex-direction:column;gap:12px}
 
-/* Day header */
 .dayHeader{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.12)}
 .dayHeader .title{font-weight:900;font-size:14px}
 .dayHeader .sub{color:var(--muted);font-size:12px;font-weight:700}
 .dayHeader .count{color:var(--muted);font-weight:800;font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.03)}
 
-/* Match card */
 .match{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(180deg,rgba(13,35,23,.90),rgba(11,28,19,.72));position:relative;overflow:hidden;cursor:pointer}
 @media(max-width:560px){.match{grid-template-columns:110px 1fr}}
 .time{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);font-weight:800}
@@ -107,8 +108,6 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;font-
 .modal{width:min(920px, 100%);max-height: 92vh;border-radius: 22px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background: linear-gradient(180deg, rgba(10,16,14,.96), rgba(6,10,8,.96));box-shadow: 0 30px 90px rgba(0,0,0,.65);}
 .modalTop{
   --homeLogoUrl:none; --awayLogoUrl:none;
-  --homeTint: rgba(239,68,68,.18);
-  --awayTint: rgba(96,165,250,.16);
   --homeBar: rgba(239,68,68,.90);
   --awayBar: rgba(96,165,250,.90);
   position:relative;padding: 16px;border-bottom:1px solid rgba(255,255,255,.08);overflow:hidden;
@@ -118,12 +117,10 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;font-
   background:
     var(--homeLogoUrl) left 10% top 25% / 280px 280px no-repeat,
     var(--awayLogoUrl) right 10% top 25% / 280px 280px no-repeat,
-    radial-gradient(720px 360px at 18% 20%, var(--homeTint), transparent 65%),
-    radial-gradient(720px 360px at 85% 15%, var(--awayTint), transparent 65%),
     linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,0));
   filter: blur(20px);opacity:.95;pointer-events:none;
 }
-.modalTop::after{content:"";position:absolute; inset:0;background: linear-gradient(180deg, rgba(0,0,0,.40), rgba(0,0,0,.08));pointer-events:none;}
+.modalTop::after{content:"";position:absolute; inset:0;background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.10));pointer-events:none;}
 .modalTop > *{position:relative; z-index:1}
 .modalHeaderRow{display:flex; justify-content:space-between; align-items:center; gap:10px;}
 .pillMini{display:inline-flex; align-items:center; gap:8px;padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background: rgba(255,255,255,.04);color: var(--muted);font-weight:800;font-size:12px;}
@@ -142,16 +139,16 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;font-
 .modalBody{padding: 14px;max-height: calc(92vh - 230px);overflow:auto;}
 .cardBlock{border:1px solid rgba(255,255,255,.08);background: rgba(255,255,255,.03);border-radius: 18px;padding: 12px;}
 
-/* Stats (formal + fino) */
 .statsFont{font-family:"Source Sans 3", Inter, system-ui}
 .statsTitle{font-weight:800;color:var(--txt);font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px}
+
 .statItem{padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.12);margin-bottom:10px}
 .statLabel{color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
 .statLine{display:grid;grid-template-columns:38px 1fr 38px;gap:10px;align-items:center}
 .statNum{font-variant-numeric:tabular-nums;font-weight:800;font-size:13px;text-align:center}
 .track{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;position:relative}
-.fillL{height:100%;border-radius:999px;position:absolute;left:0;top:0}
-.fillR{height:100%;border-radius:999px;position:absolute;right:0;top:0}
+.fillL{height:100%;background:var(--homeBar);border-radius:999px}
+.fillR{height:100%;background:var(--awayBar);border-radius:999px;position:absolute;right:0;top:0}
 
 .playerBlock{margin-top:14px}
 .playerHeader{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}
@@ -211,6 +208,11 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;font-
     <button class="tab" role="tab" aria-selected="true" data-league="EPL">Premier League</button>
     <button class="tab" role="tab" aria-selected="false" data-league="LL">LaLiga</button>
     <button class="tab" role="tab" aria-selected="false" data-league="L1">Ligue 1</button>
+
+    <button class="tab" role="tab" aria-selected="false" data-league="UCL">Champions</button>
+    <button class="tab" role="tab" aria-selected="false" data-league="LMX">Liga MX</button>
+    <button class="tab" role="tab" aria-selected="false" data-league="EFLC">EFL Cup</button>
+    <button class="tab" role="tab" aria-selected="false" data-league="CDR">Copa del Rey</button>
   </nav>
 
   <div class="grid">
@@ -223,12 +225,12 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;font-
       <h2>Resumen</h2>
       <div class="kv"><div class="k">Liga activa</div><div class="v" id="activeLeague">Premier League</div></div>
       <div class="kv"><div class="k">Modo</div><div class="v" id="modeLabel">JORNADA</div></div>
-      <div class="kv"><div class="k">Jornada</div><div class="v" id="roundLabel">—</div></div>
+      <div class="kv"><div class="k">Ronda/Jornada</div><div class="v" id="roundLabel">—</div></div>
       <div class="kv"><div class="k">Partidos</div><div class="v" id="count">0</div></div>
       <div class="kv"><div class="k">LIVE</div><div class="v" id="liveCount">0</div></div>
       <div class="kv"><div class="k">FT</div><div class="v" id="ftCount">0</div></div>
       <div class="kv"><div class="k">Última</div><div class="v" id="updated">—</div></div>
-      <div class="small" id="note">Cargando jornadas…</div>
+      <div class="small" id="note">Cargando…</div>
     </aside>
   </div>
 
@@ -271,15 +273,31 @@ footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center;font-
 </div>
 
 <script>
-const LEAGUES = { EPL:{name:"Premier League",id:39}, LL:{name:"LaLiga",id:140}, L1:{name:"Ligue 1",id:61} };
-function getCurrentSeason(){ const d=new Date(); const y=d.getFullYear(); const m=d.getMonth()+1; return (m>=7)?y:(y-1); }
+/* ✅ LIGAS + COPAS */
+const LEAGUES = {
+  EPL:  { name:"Premier League", id:39 },
+  LL:   { name:"LaLiga", id:140 },
+  L1:   { name:"Ligue 1", id:61 },
+
+  UCL:  { name:"Champions League", id:2 },
+  LMX:  { name:"Liga MX", id:262 },
+  EFLC: { name:"EFL Cup", id:48 },
+  CDR:  { name:"Copa del Rey", id:143 },
+};
+
+const CUP_IDS = new Set([2,48,143]); // UCL, EFL Cup, Copa del Rey
+
+function getCurrentSeason(){
+  const d=new Date(); const y=d.getFullYear(); const m=d.getMonth()+1;
+  return (m>=7)?y:(y-1);
+}
 const SEASON=getCurrentSeason();
 const TZ="America/Mexico_City";
 
 let active="EPL", mode="round", query="";
 let currentData=[], rounds=[], roundIndex=0;
 let roundsCache=new Map(), currentRoundCache=new Map();
-let lastClickedEl=null, selectedMatch=null;
+let selectedMatch=null;
 
 const elMatches=document.getElementById("matches");
 const elTitle=document.getElementById("leagueTitle");
@@ -313,11 +331,27 @@ const tabStats=document.getElementById("tab_stats");
 const tabEvents=document.getElementById("tab_events");
 const tabStandings=document.getElementById("tab_standings");
 
-function normalizeStatus(short){ if(!short)return"NS"; if(short==="FT"||short==="AET"||short==="PEN")return"FT"; if(short==="NS")return"NS"; return"LIVE"; }
+function roundLabelForActive(){
+  const id = LEAGUES[active].id;
+  return CUP_IDS.has(id) ? "Ronda" : "Jornada";
+}
+
+function normalizeStatus(short){
+  if(!short) return "NS";
+  if(short==="FT"||short==="AET"||short==="PEN") return "FT";
+  if(short==="NS") return "NS";
+  return "LIVE";
+}
 function periodFromShort(short){
-  if(!short)return""; if(short==="1H")return"1T"; if(short==="2H")return"2T"; if(short==="HT")return"DESCANSO";
-  if(short==="ET")return"TE"; if(short==="PEN")return"PENALES"; if(short==="FT"||short==="AET")return"FINAL";
-  if(short==="NS")return"PRÓXIMO"; return"EN JUEGO";
+  if(!short)return"";
+  if(short==="1H")return"1T";
+  if(short==="2H")return"2T";
+  if(short==="HT")return"DESCANSO";
+  if(short==="ET")return"TE";
+  if(short==="PEN")return"PENALES";
+  if(short==="FT"||short==="AET")return"FINAL";
+  if(short==="NS")return"PRÓXIMO";
+  return"EN JUEGO";
 }
 function badge(status){
   if(status==="LIVE")return`<span class="badge live">LIVE</span>`;
@@ -325,9 +359,12 @@ function badge(status){
   return`<span class="badge ns">NS</span>`;
 }
 function sublineText(m){
-  if(m.status==="LIVE"){ const add=(typeof m.added==="number")?` · +${m.added}`:""; return`${m.period||"EN JUEGO"}${add}`; }
+  if(m.status==="LIVE"){
+    const add=(typeof m.added==="number")?` · +${m.added}`:"";
+    return`${m.period||"EN JUEGO"}${add}`;
+  }
   if(m.status==="FT")return"FINAL";
-  return"PRÓXIMO";
+  return"CITADO";
 }
 function scoreHTML(m){
   if(m.status==="NS")return`<div class="scoreCenter"><div class="vs">VS</div></div>`;
@@ -337,7 +374,6 @@ function logoImg(src, alt, cls="logoBig"){
   const fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='100%25' height='100%25' rx='14' ry='14' fill='rgba(255,255,255,0.08)'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='30'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E";
   return `<img class="${cls}" src="${src||fallback}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.src='${fallback}'">`;
 }
-
 function mapFixtures(json){
   const fixtures=(json&&json.response)?json.response:[];
   return fixtures.map(f=>{
@@ -383,7 +419,6 @@ function applySearch(arr){
   const q=query.toLowerCase();
   return arr.filter(m=>m.home.toLowerCase().includes(q)||m.away.toLowerCase().includes(q));
 }
-
 function dayKeyFromISO(iso){
   if(!iso)return"unknown";
   const d=new Date(iso);
@@ -439,15 +474,13 @@ async function detectCurrentRound(leagueKey){
   currentRoundCache.set(leagueKey,ans);
   return ans;
 }
-function roundPretty(s){return s.replace("Regular Season -","Jornada").trim();}
 function statusEmoji(st){return st==="current"?"🟢":st==="future"?"🔵":"⚫";}
-
 function renderRoundSelector(){
   roundSelect.innerHTML="";
   rounds.forEach((r,i)=>{
     const opt=document.createElement("option");
     opt.value=String(i);
-    opt.textContent=`${statusEmoji(r.status)} ${roundPretty(r.round)} (${r.status==="current"?"Actual":r.status==="past"?"Pasada":"Futura"})`;
+    opt.textContent=`${statusEmoji(r.status)} ${r.round}`;
     if(i===roundIndex)opt.selected=true;
     roundSelect.appendChild(opt);
   });
@@ -480,7 +513,7 @@ function render(arr){
 
   elActive.textContent=meta.name;
   elModeLabel.textContent=(mode==="round")?"JORNADA":"LIVE";
-  elTitle.textContent=`${meta.name} — ${(mode==="round")?"Jornada":"En vivo"}`;
+  elTitle.textContent=`${meta.name} — ${roundLabelForActive()}`;
 
   elCount.textContent=String(filtered.length);
   elLive.textContent=String(filtered.filter(x=>x.status==="LIVE").length);
@@ -509,10 +542,6 @@ function render(arr){
 
   elMatches.querySelectorAll(".match").forEach(cardEl=>{
     cardEl.addEventListener("click", ()=>{
-      if(lastClickedEl)lastClickedEl.classList.remove("selected");
-      cardEl.classList.add("selected");
-      lastClickedEl=cardEl;
-
       const id=cardEl.getAttribute("data-fixture");
       const m=currentData.find(x=>x.id===id);
       if(m)openMatchModal(m);
@@ -520,23 +549,23 @@ function render(arr){
   });
 }
 
+async function fallbackNextFixtures(){
+  const meta=LEAGUES[active];
+  elNote.textContent="Sin rounds. Mostrando próximos partidos…";
+  const j=await api("fixtures",{league:meta.id,season:SEASON,next:15});
+  currentData=mapFixtures(j);
+  elRoundLabel.textContent="Próximos";
+  render(currentData);
+}
+
 async function loadRoundByIndex(idx){
   roundIndex=idx;
   renderRoundSelector();
   const meta=LEAGUES[active];
   const r=rounds[roundIndex];
-  elRoundLabel.textContent=`${roundPretty(r.round)} (${r.status==="current"?"Actual":r.status==="past"?"Pasada":"Futura"})`;
+  elRoundLabel.textContent=r.round;
   const j=await api("fixtures",{league:meta.id,season:SEASON,round:r.round});
   currentData=mapFixtures(j);
-  render(currentData);
-}
-
-async function fallbackNextFixtures(){
-  const meta=LEAGUES[active];
-  elNote.textContent="No hay rounds disponibles. Mostrando próximos partidos…";
-  const j=await api("fixtures",{league:meta.id,season:SEASON,next:15});
-  currentData=mapFixtures(j);
-  elRoundLabel.textContent="Próximos";
   render(currentData);
 }
 
@@ -563,24 +592,22 @@ async function refresh(){
     rounds=roundsRaw.map((round,idx)=>({ round,index:idx,status: idx<currentIdx?"past":(idx===currentIdx?"current":"future") }));
     roundIndex=currentIdx;
     renderRoundSelector();
-
     await loadRoundByIndex(roundIndex);
     elNote.textContent="OK.";
   }catch(err){
-    elMatches.innerHTML = `<div class="empty">Error cargando datos.<br><br><span style="opacity:.8">${String(err)}</span></div>`;
-    elNote.textContent = "Error.";
+    elMatches.innerHTML=`<div class="empty">Error cargando datos.<br><br><span style="opacity:.8">${String(err)}</span></div>`;
+    elNote.textContent="Error.";
   }
 }
 
-/* ===== Modal / Tabs ===== */
+/* MODAL tabs */
 function setActiveModalTab(key){
   document.querySelectorAll(".modalTab").forEach(b=>b.classList.remove("active"));
   document.querySelector(`.modalTab[data-tab="${key}"]`).classList.add("active");
-
-  tabOverview.style.display = (key==="overview") ? "block" : "none";
-  tabStats.style.display = (key==="stats") ? "block" : "none";
-  tabEvents.style.display = (key==="events") ? "block" : "none";
-  tabStandings.style.display = (key==="standings") ? "block" : "none";
+  tabOverview.style.display=(key==="overview")?"block":"none";
+  tabStats.style.display=(key==="stats")?"block":"none";
+  tabEvents.style.display=(key==="events")?"block":"none";
+  tabStandings.style.display=(key==="standings")?"block":"none";
 }
 document.querySelectorAll(".modalTab").forEach(btn=>btn.addEventListener("click", ()=> setActiveModalTab(btn.dataset.tab)));
 
@@ -608,7 +635,6 @@ function toNum(v){
   const n = Number(s);
   return Number.isFinite(n) ? n : 0;
 }
-
 function statCompact(label, homeVal, awayVal){
   const h = toNum(homeVal);
   const a = toNum(awayVal);
@@ -622,69 +648,48 @@ function statCompact(label, homeVal, awayVal){
       <div class="statLine">
         <div class="statNum">${homeVal ?? 0}</div>
         <div class="track">
-          <div class="fillL" style="width:${hp}%; background: var(--homeBar);"></div>
-          <div class="fillR" style="width:${ap}%; background: var(--awayBar);"></div>
+          <div class="fillL" style="width:${hp}%"></div>
+          <div class="fillR" style="width:${ap}%"></div>
         </div>
         <div class="statNum">${awayVal ?? 0}</div>
       </div>
     </div>
   `;
 }
-
 function pickStat(statsArr, teamName, key){
   const team = statsArr.find(x => x.team?.name === teamName) || statsArr[0];
   const list = team?.statistics || [];
   const item = list.find(s => s.type === key);
   return item ? item.value : null;
 }
-
 function buildEventMaps(eventsJ){
   const ev = (eventsJ && eventsJ.response) ? eventsJ.response : [];
-
-  const goalsByTeam = { home: [], away: [] };
-  const cardsByTeam = { home: { y:0, r:0 }, away: { y:0, r:0 } };
-  const subsByTeam = { home: [], away: [] };
-
+  const goals = [], cards = [], subs = [];
   for (const e of ev){
-    const teamName = e.team?.name || "";
     const min = e.time?.elapsed != null ? `${e.time.elapsed}'` : "";
-    const t = e.type;
-    const d = e.detail || "";
-    const player = e.player?.name || "";
-    const assist = e.assist?.name || "";
-    const isHome = teamName === selectedMatch?.home;
-    const side = isHome ? "home" : "away";
-
-    if (t === "Goal"){
-      const pen = (d.toLowerCase().includes("penalty") || d.toLowerCase().includes("pen")) ? " (P)" : "";
-      goalsByTeam[side].push(`${player} ${min}${pen}`);
-    }
-
-    if (t === "Card"){
-      if (d.includes("Yellow")) cardsByTeam[side].y += 1;
-      if (d.includes("Red")) cardsByTeam[side].r += 1;
-    }
-
-    if (t === "subst"){
-      // player sale, assist entra
-      subsByTeam[side].push(`${assist || "⬆"} / ${player || "⬇"} ${min}`);
-    }
+    if (e.type === "Goal") goals.push({ team:e.team?.name||"", player:e.player?.name||"", detail:e.detail||"", min });
+    if (e.type === "Card") cards.push({ team:e.team?.name||"", player:e.player?.name||"", detail:e.detail||"", min });
+    if (e.type === "subst") subs.push({ team:e.team?.name||"", out:e.player?.name||"", in:e.assist?.name||"", min });
   }
-
-  return { goalsByTeam, cardsByTeam, subsByTeam, raw: ev };
+  return { goals, cards, subs };
 }
+function renderOverviewReal(match, eventsJ){
+  const { goals, cards, subs } = buildEventMaps(eventsJ);
 
-function renderModalOverview(match, eventsJ){
-  const maps = buildEventMaps(eventsJ);
+  const homeGoals = goals.filter(g=>g.team===match.home).map(g=>`${g.player} ${g.min}${g.detail.includes("Penalty")?" (P)":""}`);
+  const awayGoals = goals.filter(g=>g.team===match.away).map(g=>`${g.player} ${g.min}${g.detail.includes("Penalty")?" (P)":""}`);
 
-  const homeGoals = maps.goalsByTeam.home;
-  const awayGoals = maps.goalsByTeam.away;
+  const redCards = cards.filter(c=>c.detail.includes("Red"));
+  const yellowCards = cards.filter(c=>c.detail.includes("Yellow"));
 
-  const homeCards = maps.cardsByTeam.home;
-  const awayCards = maps.cardsByTeam.away;
+  const homeReds = redCards.filter(c=>c.team===match.home).map(c=>`${c.player} ${c.min}`);
+  const awayReds = redCards.filter(c=>c.team===match.away).map(c=>`${c.player} ${c.min}`);
 
-  const homeSubs = maps.subsByTeam.home;
-  const awaySubs = maps.subsByTeam.away;
+  const homeY = yellowCards.filter(c=>c.team===match.home).length;
+  const awayY = yellowCards.filter(c=>c.team===match.away).length;
+
+  const homeSubs = subs.filter(s=>s.team===match.home).slice(0,6).map(s=>`🔁 ${s.in} ⬅ ${s.out} (${s.min})`);
+  const awaySubs = subs.filter(s=>s.team===match.away).slice(0,6).map(s=>`🔁 ${s.in} ⬅ ${s.out} (${s.min})`);
 
   tabOverview.innerHTML = `
     <div class="statsTitle">Overview</div>
@@ -697,401 +702,129 @@ function renderModalOverview(match, eventsJ){
 
     <div class="statItem">
       <div class="statLabel">Tarjetas</div>
-      <div class="smallMuted"><b>${match.home}</b>: 🟨 ${homeCards.y} · 🟥 ${homeCards.r}</div>
-      <div class="smallMuted" style="margin-top:6px"><b>${match.away}</b>: 🟨 ${awayCards.y} · 🟥 ${awayCards.r}</div>
+      <div class="smallMuted"><b>Amarillas</b>: ${match.home} ${homeY} — ${awayY} ${match.away}</div>
+      <div class="smallMuted" style="margin-top:6px"><b>Rojas</b>:
+        ${match.home}: ${homeReds.length ? homeReds.join(", ") : "0"} ·
+        ${match.away}: ${awayReds.length ? awayReds.join(", ") : "0"}
+      </div>
     </div>
 
     <div class="statItem">
       <div class="statLabel">Cambios</div>
-      <div class="smallMuted"><b>${match.home}</b>: ${homeSubs.length ? homeSubs.slice(0,6).join(" · ") : "—"}</div>
-      <div class="smallMuted" style="margin-top:6px"><b>${match.away}</b>: ${awaySubs.length ? awaySubs.slice(0,6).join(" · ") : "—"}</div>
+      <div class="smallMuted"><b>${match.home}</b>: ${homeSubs.length ? homeSubs.join(" · ") : "—"}</div>
+      <div class="smallMuted" style="margin-top:6px"><b>${match.away}</b>: ${awaySubs.length ? awaySubs.join(" · ") : "—"}</div>
     </div>
-
-    <div class="smallMuted" style="margin-top:10px">Tip: en “Play-by-Play” tienes el detalle completo.</div>
   `;
 }
 
-function renderModalStatsReal(match, statsJ, eventsJ, lineupsJ){
+function renderModalStatsReal(match, statsJ){
   const statsArr = (statsJ && statsJ.response) ? statsJ.response : [];
-
-  const possH = pickStat(statsArr, match.home, "Ball Possession");
-  const possA = pickStat(statsArr, match.away, "Ball Possession");
-  const shotsH = pickStat(statsArr, match.home, "Total Shots");
-  const shotsA = pickStat(statsArr, match.away, "Total Shots");
-  const sogH = pickStat(statsArr, match.home, "Shots on Goal");
-  const sogA = pickStat(statsArr, match.away, "Shots on Goal");
-  const cornersH = pickStat(statsArr, match.home, "Corner Kicks");
-  const cornersA = pickStat(statsArr, match.away, "Corner Kicks");
-  const foulsH = pickStat(statsArr, match.home, "Fouls");
-  const foulsA = pickStat(statsArr, match.away, "Fouls");
-  const yH = pickStat(statsArr, match.home, "Yellow Cards");
-  const yA = pickStat(statsArr, match.away, "Yellow Cards");
-  const rH = pickStat(statsArr, match.home, "Red Cards");
-  const rA = pickStat(statsArr, match.away, "Red Cards");
-
-  const evMaps = buildEventMaps(eventsJ);
-
-  const lineups = (lineupsJ && lineupsJ.response) ? lineupsJ.response : [];
-  const homeLU = lineups.find(l => l.team?.id === match.homeId) || lineups[0];
-  const awayLU = lineups.find(l => l.team?.id === match.awayId) || lineups[1];
-
-  function renderPlayersBlock(lu, isHome){
-    if (!lu) return `<div class="smallMuted">Sin alineación disponible.</div>`;
-    const start = (lu.startXI || []).map(x => x.player);
-    const subs = (lu.substitutes || []).map(x => x.player);
-    const teamName = lu.team?.name || (isHome ? match.home : match.away);
-
-    const events = evMaps.raw || [];
-
-    function badgesForPlayer(p){
-      const pid = p.id;
-      const out = [];
-
-      for (const e of events){
-        const min = e.time?.elapsed != null ? `${e.time.elapsed}'` : "";
-        if (e.type === "Goal" && e.player?.id === pid) {
-          const pen = (String(e.detail||"").toLowerCase().includes("pen")) ? " (P)" : "";
-          out.push(`<span class="badg g">⚽ ${min}${pen}</span>`);
-        }
-        if (e.type === "Card" && e.player?.id === pid) {
-          if (String(e.detail||"").includes("Yellow")) out.push(`<span class="badg y">🟨 ${min}</span>`);
-          if (String(e.detail||"").includes("Red")) out.push(`<span class="badg r">🟥 ${min}</span>`);
-        }
-        if (e.type === "subst"){
-          // player sale
-          if (e.player?.id === pid) out.push(`<span class="badg out">🔻 ${min}</span>`);
-          // assist entra
-          if (e.assist?.id === pid) out.push(`<span class="badg in">🔺 ${min}</span>`);
-        }
-      }
-      return out.join("");
-    }
-
-    const renderRow = (p) => `
-      <div class="playerRow">
-        <div class="pNo">${p.number ?? "—"}</div>
-        <div class="pName">${p.name ?? "—"}</div>
-        <div class="pBadges">${badgesForPlayer(p) || ""}</div>
-      </div>
-    `;
-
-    return `
-      <div class="playerBlock">
-        <div class="playerHeader">
-          <div class="team">${teamName}</div>
-          <div class="smallMuted">${isHome ? "Local" : "Visita"}</div>
-        </div>
-
-        <div class="smallMuted" style="margin:6px 0 8px">Titulares</div>
-        <div class="playerList">${start.map(renderRow).join("")}</div>
-
-        <div class="smallMuted" style="margin:12px 0 8px">Banca</div>
-        <div class="playerList">${subs.map(renderRow).join("")}</div>
-      </div>
-    `;
-  }
-
   tabStats.innerHTML = `
     <div class="statsTitle">Team Stats</div>
-    ${statCompact("Posesión", possH, possA)}
-    ${statCompact("Tiros", shotsH, shotsA)}
-    ${statCompact("Tiros a puerta", sogH, sogA)}
-    ${statCompact("Corners", cornersH, cornersA)}
-    ${statCompact("Faltas", foulsH, foulsA)}
-    ${statCompact("Amarillas", yH, yA)}
-    ${statCompact("Rojas", rH, rA)}
-
-    <div class="statsTitle" style="margin-top:16px">Jugadores</div>
-    ${renderPlayersBlock(homeLU, true)}
-    <div style="height:12px"></div>
-    ${renderPlayersBlock(awayLU, false)}
+    ${statCompact("Posesión", pickStat(statsArr, match.home, "Ball Possession"), pickStat(statsArr, match.away, "Ball Possession"))}
+    ${statCompact("Tiros", pickStat(statsArr, match.home, "Total Shots"), pickStat(statsArr, match.away, "Total Shots"))}
+    ${statCompact("Tiros a puerta", pickStat(statsArr, match.home, "Shots on Goal"), pickStat(statsArr, match.away, "Shots on Goal"))}
+    ${statCompact("Corners", pickStat(statsArr, match.home, "Corner Kicks"), pickStat(statsArr, match.away, "Corner Kicks"))}
+    ${statCompact("Faltas", pickStat(statsArr, match.home, "Fouls"), pickStat(statsArr, match.away, "Fouls"))}
+    ${statCompact("Amarillas", pickStat(statsArr, match.home, "Yellow Cards"), pickStat(statsArr, match.away, "Yellow Cards"))}
+    ${statCompact("Rojas", pickStat(statsArr, match.home, "Red Cards"), pickStat(statsArr, match.away, "Red Cards"))}
   `;
 }
 
-function renderModalEventsReal(match, eventsJ){
+function renderModalEventsReal(eventsJ){
   const ev = (eventsJ && eventsJ.response) ? eventsJ.response : [];
   if (!ev.length){
     tabEvents.innerHTML = `<div class="smallMuted">No hay eventos disponibles.</div>`;
     return;
   }
-
-  const rows = ev
-    .slice()
-    .sort((a,b)=>(a.time?.elapsed||0)-(b.time?.elapsed||0))
-    .map(e=>{
-      const min = e.time?.elapsed != null ? `${e.time.elapsed}'` : "—";
-      const team = e.team?.name || "";
-      const player = e.player?.name || team;
-      const detail = e.detail || "";
-      const type = e.type || "";
-
-      let icon = "•";
-      if (type === "Goal") icon = "⚽";
-      if (type === "Card" && detail.includes("Yellow")) icon = "🟨";
-      if (type === "Card" && detail.includes("Red")) icon = "🟥";
-      if (type === "subst") icon = "🔁";
-
-      return `
-        <div class="playerRow" style="grid-template-columns: 64px 1fr 120px">
-          <div class="pNo" style="text-align:left">${min} ${icon}</div>
-          <div class="pName" title="${team}">${player} — ${detail}</div>
-          <div class="pBadges"><span class="badg">${type}</span></div>
-        </div>
-      `;
-    }).join("");
-
-  tabEvents.innerHTML = `
-    <div class="statsTitle">Play-by-Play</div>
-    <div class="playerList">${rows}</div>
-  `;
+  const rows = ev.slice().sort((a,b)=>(a.time?.elapsed||0)-(b.time?.elapsed||0)).map(e=>{
+    const min = e.time?.elapsed != null ? `${e.time.elapsed}'` : "—";
+    const team = e.team?.name || "";
+    const player = e.player?.name || team;
+    const detail = e.detail || "";
+    const type = e.type || "";
+    return `
+      <div class="playerRow" style="grid-template-columns: 64px 1fr 120px">
+        <div class="pNo" style="text-align:left">${min}</div>
+        <div class="pName" title="${team}">${player} — ${detail}</div>
+        <div class="pBadges"><span class="badg">${type}</span></div>
+      </div>
+    `;
+  }).join("");
+  tabEvents.innerHTML = `<div class="statsTitle">Play-by-Play</div><div class="playerList">${rows}</div>`;
 }
 
 function renderModalStandingsReal(match, standingsJ){
   const leagues = standingsJ?.response?.[0]?.league;
   const table = leagues?.standings?.[0] || [];
-
   if (!table.length){
     tabStandings.innerHTML = `<div class="smallMuted">No hay standings disponibles.</div>`;
     return;
   }
-
-  const home = (match.home || "").toLowerCase();
-  const away = (match.away || "").toLowerCase();
-
+  const home = (match.home||"").toLowerCase();
+  const away = (match.away||"").toLowerCase();
   const rows = table.slice(0, 20).map(r=>{
     const name = r.team?.name || "";
     const isFocus = name.toLowerCase() === home || name.toLowerCase() === away;
-
     return `
-      <div class="playerRow" style="grid-template-columns: 38px 1fr 60px; ${isFocus ? "border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.05);" : ""}">
+      <div class="playerRow" style="grid-template-columns: 38px 1fr 48px; ${isFocus ? "border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.05);" : ""}">
         <div class="pNo">${r.rank}</div>
         <div class="pName">${name}</div>
         <div class="pBadges"><span class="badg">Pts ${r.points}</span></div>
       </div>
     `;
   }).join("");
-
-  tabStandings.innerHTML = `
-    <div class="statsTitle">Standings</div>
-    <div class="playerList">${rows}</div>
-  `;
+  tabStandings.innerHTML = `<div class="statsTitle">Standings</div><div class="playerList">${rows}</div>`;
 }
 
-/* ✅ Colores: intentamos sacar color del escudo; si falla, fallback */
-async function getDominantColor(url){
-  return new Promise((resolve)=>{
-    try{
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.referrerPolicy = "no-referrer";
-      img.onload = () => {
-        try{
-          const c = document.createElement("canvas");
-          const ctx = c.getContext("2d", { willReadFrequently:true });
-          const w = 32, h = 32;
-          c.width = w; c.height = h;
-          ctx.drawImage(img, 0, 0, w, h);
-          const data = ctx.getImageData(0,0,w,h).data;
-
-          let r=0,g=0,b=0,count=0;
-          for(let i=0;i<data.length;i+=16){
-            const rr=data[i], gg=data[i+1], bb=data[i+2], aa=data[i+3];
-            if (aa < 140) continue;
-            const max = Math.max(rr,gg,bb);
-            const min = Math.min(rr,gg,bb);
-            if (max > 245 && min > 245) continue;
-            if (max < 18 && min < 18) continue;
-            r+=rr; g+=gg; b+=bb; count++;
-          }
-          if (!count) return resolve(null);
-          resolve({r:Math.round(r/count), g:Math.round(g/count), b:Math.round(b/count)});
-        } catch { resolve(null); }
-      };
-      img.onerror = () => resolve(null);
-      img.src = url + (url.includes("?") ? "&" : "?") + "cb=" + Date.now();
-    } catch { resolve(null); }
-  });
+// ✅ colores de barras (aprox). Luego si quieres, hacemos un color-map por teamId.
+function setBarsFromLogos(){
+  modalTop.style.setProperty("--homeBar", "rgba(239,68,68,.90)");
+  modalTop.style.setProperty("--awayBar", "rgba(96,165,250,.90)");
 }
-function rgba(c,a){ return `rgba(${c.r},${c.g},${c.b},${a})`; }
-
-function setActiveModalTabSafe(key){ setActiveModalTab(key); }
 
 async function loadMatchDetails(match){
   const fixture = match.fixtureId;
-
-  const [statsJ, eventsJ, lineupsJ, standingsJ] = await Promise.all([
+  const [statsJ, eventsJ, standingsJ] = await Promise.all([
     api("statistics", { fixture }),
     api("events", { fixture }),
-    api("lineups", { fixture }),
-    api("standings", { league: match.leagueId || LEAGUES[active].id, season: SEASON })
+    api("standings", { league: match.leagueId, season: SEASON })
   ]);
 
-  renderModalOverview(match, eventsJ);
-  renderModalStatsReal(match, statsJ, eventsJ, lineupsJ);
-  renderModalEventsReal(match, eventsJ);
+  renderOverviewReal(match, eventsJ);
+  renderModalStatsReal(match, statsJ);
+  renderModalEventsReal(eventsJ);
   renderModalStandingsReal(match, standingsJ);
 }
 
-async function openMatchModal(match){
-  selectedMatch = match;
+function openMatchModal(match){
+  selectedMatch=match;
   modalOverlay.classList.add("show");
-  document.body.style.overflow = "hidden";
+  document.body.style.overflow="hidden";
 
   modalTop.style.setProperty("--homeLogoUrl", `url("${match.homeLogo}")`);
   modalTop.style.setProperty("--awayLogoUrl", `url("${match.awayLogo}")`);
+  setBarsFromLogos();
 
-  // set header info
-  modalLeague.textContent = match.leagueName || LEAGUES[active].name;
-  modalHome.innerHTML = `${logoImg(match.homeLogo, match.home, "modalBigLogo")}<div class="tname">${match.home}</div>`;
-  modalAway.innerHTML = `<div class="tname">${match.away}</div>${logoImg(match.awayLogo, match.away, "modalBigLogo")}`;
-  modalScore.textContent = (match.status === "NS") ? "—" : `${match.h ?? 0} – ${match.a ?? 0}`;
-  modalStatus.textContent = (match.status === "FT") ? "Final" : (match.status === "LIVE") ? `En juego ${match.minute || ""}` : "Próximo";
+  modalLeague.textContent=match.leagueName||LEAGUES[active].name;
+  modalHome.innerHTML=`${logoImg(match.homeLogo, match.home, "modalBigLogo")}<div class="tname">${match.home}</div>`;
+  modalAway.innerHTML=`<div class="tname">${match.away}</div>${logoImg(match.awayLogo, match.away, "modalBigLogo")}`;
+
+  const scoreText=(match.status==="NS")?"—":`${match.h??0} – ${match.a??0}`;
+  modalScore.textContent=scoreText;
+  modalStatus.textContent=(match.status==="FT")?"Final":(match.status==="LIVE")?`En juego ${match.minute||""}`:"Próximo";
 
   renderModalLoading();
-  setActiveModalTabSafe("overview");
-
-  // intentar color real del escudo
-  const [hc, ac] = await Promise.all([ getDominantColor(match.homeLogo), getDominantColor(match.awayLogo) ]);
-  if (hc) {
-    modalTop.style.setProperty("--homeTint", rgba(hc, .18));
-    modalTop.style.setProperty("--homeBar", rgba(hc, .90));
-  } else {
-    modalTop.style.setProperty("--homeTint", "rgba(239,68,68,.18)");
-    modalTop.style.setProperty("--homeBar", "rgba(239,68,68,.90)");
-  }
-  if (ac) {
-    modalTop.style.setProperty("--awayTint", rgba(ac, .16));
-    modalTop.style.setProperty("--awayBar", rgba(ac, .90));
-  } else {
-    modalTop.style.setProperty("--awayTint", "rgba(96,165,250,.16)");
-    modalTop.style.setProperty("--awayBar", "rgba(96,165,250,.90)");
-  }
-
+  setActiveModalTab("overview");
   loadMatchDetails(match).catch(err=>{
-    tabOverview.innerHTML = `<div class="smallMuted">No se pudo cargar overview.<br>${String(err)}</div>`;
-    tabStats.innerHTML = `<div class="smallMuted">No se pudo cargar stats/jugadores.</div>`;
-    tabEvents.innerHTML = `<div class="smallMuted">No se pudo cargar eventos.</div>`;
-    tabStandings.innerHTML = `<div class="smallMuted">No se pudo cargar standings.</div>`;
+    tabOverview.innerHTML = `<div class="smallMuted">Error overview: ${String(err)}</div>`;
+    tabStats.innerHTML = `<div class="smallMuted">Error stats: ${String(err)}</div>`;
+    tabEvents.innerHTML = `<div class="smallMuted">Error events</div>`;
+    tabStandings.innerHTML = `<div class="smallMuted">Error standings</div>`;
   });
 }
 
-/* ===== Main list helpers ===== */
-function card(m){
-  return `
-  <article class="match" data-fixture="${m.id}">
-    <div class="time">
-      <span class="kickoff">${m.time}</span>
-      ${badge(m.status)}
-      ${m.status==="LIVE"?`<span class="minute">${m.minute||""}</span>`:""}
-    </div>
-    <div class="broadcast">
-      ${logoImg(m.homeLogo, m.home + " logo")}
-      <div class="scoreWrap">
-        ${scoreHTML(m)}
-        <div class="subline">${sublineText(m)}</div>
-      </div>
-      ${logoImg(m.awayLogo, m.away + " logo")}
-    </div>
-  </article>`;
-}
-
-function renderList(arr){
-  const meta=LEAGUES[active];
-  const filtered=applySearch(arr);
-
-  elActive.textContent=meta.name;
-  elModeLabel.textContent=(mode==="round")?"JORNADA":"LIVE";
-  elTitle.textContent=`${meta.name} — ${(mode==="round")?"Jornada":"En vivo"}`;
-
-  elCount.textContent=String(filtered.length);
-  elLive.textContent=String(filtered.filter(x=>x.status==="LIVE").length);
-  elFt.textContent=String(filtered.filter(x=>x.status==="FT").length);
-  elUpdated.textContent=new Date().toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"});
-
-  if(filtered.length===0){
-    elMatches.innerHTML=`<div class="empty">No hay partidos para mostrar.</div>`;
-    return;
-  }
-
-  const grouped=groupByDay(filtered);
-  elMatches.innerHTML=grouped.map(g=>{
-    const title=g.dayKey==="unknown"?"Sin fecha":dayTitleFromKey(g.dayKey);
-    return `
-      <div class="dayHeader">
-        <div>
-          <div class="title">${title}</div>
-          <div class="sub">Partidos del día</div>
-        </div>
-        <div class="count">${g.items.length} partidos</div>
-      </div>
-      ${g.items.map(card).join("")}
-    `;
-  }).join("");
-
-  elMatches.querySelectorAll(".match").forEach(cardEl=>{
-    cardEl.addEventListener("click", ()=>{
-      if(lastClickedEl)lastClickedEl.classList.remove("selected");
-      cardEl.classList.add("selected");
-      lastClickedEl=cardEl;
-      const id=cardEl.getAttribute("data-fixture");
-      const m=currentData.find(x=>x.id===id);
-      if(m)openMatchModal(m);
-    });
-  });
-}
-
-async function loadRoundByIndex(idx){
-  roundIndex=idx;
-  renderRoundSelector();
-  const meta=LEAGUES[active];
-  const r=rounds[roundIndex];
-  elRoundLabel.textContent=`${roundPretty(r.round)} (${r.status==="current"?"Actual":r.status==="past"?"Pasada":"Futura"})`;
-  const j=await api("fixtures",{league:meta.id,season:SEASON,round:r.round});
-  currentData=mapFixtures(j);
-  renderList(currentData);
-}
-
-async function fallbackNextFixtures(){
-  const meta=LEAGUES[active];
-  elNote.textContent="No hay rounds disponibles. Mostrando próximos partidos…";
-  const j=await api("fixtures",{league:meta.id,season:SEASON,next:15});
-  currentData=mapFixtures(j);
-  elRoundLabel.textContent="Próximos";
-  renderList(currentData);
-}
-
-async function refresh(){
-  try{
-    const meta=LEAGUES[active];
-    elNote.textContent="Cargando…";
-
-    if(mode==="live"){
-      elRoundLabel.textContent="—";
-      const j=await api("fixtures",{league:meta.id,season:SEASON,live:"all"});
-      currentData=mapFixtures(j);
-      elNote.textContent="OK: LIVE.";
-      renderList(currentData);
-      return;
-    }
-
-    const roundsRaw=await getRoundsRaw(active);
-    if(!roundsRaw.length){ await fallbackNextFixtures(); return; }
-
-    const currentRound=await detectCurrentRound(active);
-    const currentIdx=Math.max(0, roundsRaw.indexOf(currentRound));
-
-    rounds=roundsRaw.map((round,idx)=>({ round,index:idx,status: idx<currentIdx?"past":(idx===currentIdx?"current":"future") }));
-    roundIndex=currentIdx;
-    renderRoundSelector();
-    await loadRoundByIndex(roundIndex);
-    elNote.textContent="OK.";
-  }catch(err){
-    elMatches.innerHTML = `<div class="empty">Error cargando datos.<br><br><span style="opacity:.8">${String(err)}</span></div>`;
-    elNote.textContent = "Error.";
-  }
-}
-
-/* ===== UI Wiring ===== */
+/* UI */
 document.querySelectorAll(".tab").forEach(tab=>{
   tab.addEventListener("click", async ()=>{
     document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected","false"));
@@ -1100,7 +833,7 @@ document.querySelectorAll(".tab").forEach(tab=>{
     await refresh();
   });
 });
-document.getElementById("search").addEventListener("input",(e)=>{ query=e.target.value.trim(); renderList(currentData); });
+document.getElementById("search").addEventListener("input",(e)=>{ query=e.target.value.trim(); render(currentData); });
 roundSelect.addEventListener("change", e => loadRoundByIndex(Number(e.target.value)));
 prevRoundBtn.addEventListener("click", ()=>{ if(roundIndex>0)loadRoundByIndex(roundIndex-1); });
 nextRoundBtn.addEventListener("click", ()=>{ if(roundIndex<rounds.length-1)loadRoundByIndex(roundIndex+1); });
@@ -1111,7 +844,27 @@ modeBtn.addEventListener("click", async ()=>{
 });
 refreshBtn.addEventListener("click", ()=> refresh());
 
-setInterval(()=>{ if(mode==="live")refresh(); }, 60000);
+/* modal close */
+closeModalBtn.addEventListener("click", closeMatchModal);
+modalOverlay.addEventListener("click",(e)=>{ if(e.target===modalOverlay)closeMatchModal(); });
+document.addEventListener("keydown",(e)=>{ if(e.key==="Escape" && modalOverlay.classList.contains("show"))closeMatchModal(); });
+
+function closeMatchModal(){
+  modalOverlay.classList.remove("show");
+  document.body.style.overflow="";
+  selectedMatch=null;
+}
+
+function setActiveModalTab(key){
+  document.querySelectorAll(".modalTab").forEach(b=>b.classList.remove("active"));
+  document.querySelector(`.modalTab[data-tab="${key}"]`).classList.add("active");
+  tabOverview.style.display=(key==="overview")?"block":"none";
+  tabStats.style.display=(key==="stats")?"block":"none";
+  tabEvents.style.display=(key==="events")?"block":"none";
+  tabStandings.style.display=(key==="standings")?"block":"none";
+}
+
+document.querySelectorAll(".modalTab").forEach(btn=>btn.addEventListener("click", ()=> setActiveModalTab(btn.dataset.tab)));
 
 refresh();
 </script>
