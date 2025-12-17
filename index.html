@@ -17,6 +17,9 @@
   --live:#60a5fa; --good:#34d399; --ns:#a7f3d0;
   --shadow:0 18px 60px rgba(0,0,0,.45);
   --radius:18px;
+
+  /* ✅ Glow del tab activo (se actualiza por JS) */
+  --tabGlow: rgba(96,165,250,.35);
 }
 
 *{box-sizing:border-box}
@@ -106,12 +109,29 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
   scroll-snap-type:x mandatory;
 }
 .tab{
+  display:flex;align-items:center;gap:8px;
   padding:10px 12px;border-radius:999px;color:var(--muted);
   font-weight:900;font-size:13px;cursor:pointer;
   border:1px solid transparent;background:transparent;white-space:nowrap;
   scroll-snap-align:start;
+  transition: box-shadow .2s ease, border-color .2s ease, background .2s ease;
 }
-.tab[aria-selected="true"]{color:var(--txt);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.tabLogo{
+  width:18px;height:18px;border-radius:6px;object-fit:contain;opacity:.95;
+}
+.tab[aria-selected="true"]{
+  color:var(--txt);
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.14);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.08),
+    0 0 18px var(--tabGlow);
+}
+@media(max-width:560px){
+  .tab{gap:7px}
+  .tabLogo{width:17px;height:17px}
+  .tab span{font-size:12px}
+}
 
 /* Layout panels */
 .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
@@ -344,15 +364,42 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
     </div>
   </header>
 
+  <!-- ✅ Tabs con logo + glow -->
   <nav class="tabs" role="tablist" aria-label="Ligas">
-    <button class="tab" role="tab" aria-selected="true" data-league="EPL">Premier</button>
-    <button class="tab" role="tab" aria-selected="false" data-league="LL">LaLiga</button>
-    <button class="tab" role="tab" aria-selected="false" data-league="L1">Ligue 1</button>
+    <button class="tab" role="tab" aria-selected="true" data-league="EPL">
+      <img class="tabLogo" alt="Premier League" loading="lazy" src="https://media.api-sports.io/football/leagues/39.png">
+      <span>Premier</span>
+    </button>
 
-    <button class="tab" role="tab" aria-selected="false" data-league="UCL">Champions</button>
-    <button class="tab" role="tab" aria-selected="false" data-league="LMX">Liga MX</button>
-    <button class="tab" role="tab" aria-selected="false" data-league="EFLC">EFL Cup</button>
-    <button class="tab" role="tab" aria-selected="false" data-league="CDR">Copa del Rey</button>
+    <button class="tab" role="tab" aria-selected="false" data-league="LL">
+      <img class="tabLogo" alt="LaLiga" loading="lazy" src="https://media.api-sports.io/football/leagues/140.png">
+      <span>LaLiga</span>
+    </button>
+
+    <button class="tab" role="tab" aria-selected="false" data-league="L1">
+      <img class="tabLogo" alt="Ligue 1" loading="lazy" src="https://media.api-sports.io/football/leagues/61.png">
+      <span>Ligue 1</span>
+    </button>
+
+    <button class="tab" role="tab" aria-selected="false" data-league="UCL">
+      <img class="tabLogo" alt="Champions League" loading="lazy" src="https://media.api-sports.io/football/leagues/2.png">
+      <span>Champions</span>
+    </button>
+
+    <button class="tab" role="tab" aria-selected="false" data-league="LMX">
+      <img class="tabLogo" alt="Liga MX" loading="lazy" src="https://media.api-sports.io/football/leagues/262.png">
+      <span>Liga MX</span>
+    </button>
+
+    <button class="tab" role="tab" aria-selected="false" data-league="EFLC">
+      <img class="tabLogo" alt="EFL Cup" loading="lazy" src="https://media.api-sports.io/football/leagues/48.png">
+      <span>EFL Cup</span>
+    </button>
+
+    <button class="tab" role="tab" aria-selected="false" data-league="CDR">
+      <img class="tabLogo" alt="Copa del Rey" loading="lazy" src="https://media.api-sports.io/football/leagues/143.png">
+      <span>Copa del Rey</span>
+    </button>
   </nav>
 
   <div class="grid">
@@ -421,18 +468,18 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
 </div>
 
 <script>
-/* ===== Ligas con logos ===== */
+/* ===== Ligas con logos + glow color ===== */
 const LEAGUES = {
-  EPL:  { name:"Premier League", id:39,  logo:"https://media.api-sports.io/football/leagues/39.png" },
-  LL:   { name:"LaLiga", id:140, logo:"https://media.api-sports.io/football/leagues/140.png" },
-  L1:   { name:"Ligue 1", id:61,  logo:"https://media.api-sports.io/football/leagues/61.png" },
-  UCL:  { name:"Champions League", id:2,   logo:"https://media.api-sports.io/football/leagues/2.png" },
-  LMX:  { name:"Liga MX", id:262, logo:"https://media.api-sports.io/football/leagues/262.png" },
-  EFLC: { name:"EFL Cup", id:48,  logo:"https://media.api-sports.io/football/leagues/48.png" },
-  CDR:  { name:"Copa del Rey", id:143, logo:"https://media.api-sports.io/football/leagues/143.png" },
+  EPL:  { name:"Premier League", id:39,  logo:"https://media.api-sports.io/football/leagues/39.png",  glow:"rgba(34,197,94,.35)" },
+  LL:   { name:"LaLiga", id:140,        logo:"https://media.api-sports.io/football/leagues/140.png", glow:"rgba(251,191,36,.35)" },
+  L1:   { name:"Ligue 1", id:61,        logo:"https://media.api-sports.io/football/leagues/61.png",  glow:"rgba(96,165,250,.35)" },
+  UCL:  { name:"Champions League", id:2, logo:"https://media.api-sports.io/football/leagues/2.png",   glow:"rgba(99,102,241,.35)" },
+  LMX:  { name:"Liga MX", id:262,       logo:"https://media.api-sports.io/football/leagues/262.png", glow:"rgba(16,185,129,.35)" },
+  EFLC: { name:"EFL Cup", id:48,        logo:"https://media.api-sports.io/football/leagues/48.png",  glow:"rgba(244,63,94,.35)" },
+  CDR:  { name:"Copa del Rey", id:143,  logo:"https://media.api-sports.io/football/leagues/143.png", glow:"rgba(245,158,11,.35)" },
 };
 
-const CUP_IDS = new Set([2,48,143]); // UCL, EFL Cup, Copa del Rey
+const CUP_IDS = new Set([2,48,143]);
 
 function getCurrentSeason(){
   const d=new Date(); const y=d.getFullYear(); const m=d.getMonth()+1;
@@ -442,7 +489,7 @@ const SEASON=getCurrentSeason();
 const TZ="America/Mexico_City";
 
 let active="EPL";
-let mode="round"; // round | live
+let mode="round";
 let query="";
 let currentData=[];
 let rounds=[];
@@ -487,9 +534,14 @@ const tabEvents=document.getElementById("tab_events");
 const tabStandings=document.getElementById("tab_standings");
 
 /* Helpers */
+function setActiveGlow(){
+  document.documentElement.style.setProperty("--tabGlow", LEAGUES[active].glow || "rgba(96,165,250,.35)");
+}
+
 function roundLabelForActive(){
   return CUP_IDS.has(LEAGUES[active].id) ? "Ronda" : "Jornada";
 }
+
 function normalizeStatus(short){
   if(!short) return "NS";
   if(short==="FT"||short==="AET"||short==="PEN") return "FT";
@@ -564,8 +616,6 @@ function mapFixtures(json){
       added:(status==="LIVE" && typeof added==="number")?added:undefined,
       home:f.teams?.home?.name||"Home",
       away:f.teams?.away?.name||"Away",
-      homeId:f.teams?.home?.id,
-      awayId:f.teams?.away?.id,
       homeLogo:f.teams?.home?.logo||"",
       awayLogo:f.teams?.away?.logo||"",
       h:f.goals?.home,
@@ -599,11 +649,10 @@ function groupByDay(arr){
   });
   return keys.map(k=>({dayKey:k,items:map.get(k)}));
 }
-
 function applySearch(arr){
   if(!query) return arr;
   const q=query.toLowerCase();
-  return arr.filter(m => m.home.toLowerCase().includes(q) || m.away.toLowerCase().includes(q));
+  return arr.filter(m => (m.home.toLowerCase().includes(q) || m.away.toLowerCase().includes(q)));
 }
 
 /* Rounds */
@@ -656,7 +705,7 @@ function renderRoundSelector(){
   nextRoundBtn.disabled=(roundIndex>=rounds.length-1);
 }
 
-/* Render match card */
+/* Render */
 function card(m){
   return `
     <article class="match" data-fixture="${m.id}">
@@ -764,15 +813,12 @@ async function refresh(){
     const currentRound=await detectCurrentRound(active);
     const currentIdx=Math.max(0, roundsRaw.indexOf(currentRound));
 
-    rounds = roundsRaw.map((round,idx)=>({
-      round,
-      index:idx,
-      status: idx<currentIdx?"past":(idx===currentIdx?"current":"future")
-    }));
-
+    rounds = roundsRaw.map((round,idx)=>({ round,index:idx,status: idx<currentIdx?"past":(idx===currentIdx?"current":"future") }));
     roundIndex=currentIdx;
+
     renderRoundSelector();
     await loadRoundByIndex(roundIndex);
+
     elNote.textContent="OK.";
   }catch(err){
     elMatches.innerHTML=`<div class="statItem"><div class="smallMuted">Error: ${String(err)}</div></div>`;
@@ -780,7 +826,7 @@ async function refresh(){
   }
 }
 
-/* ===== Modal real ===== */
+/* ===== Modal ===== */
 function setActiveModalTab(key){
   document.querySelectorAll(".modalTab").forEach(b=>b.classList.remove("active"));
   document.querySelector(`.modalTab[data-tab="${key}"]`).classList.add("active");
@@ -849,31 +895,19 @@ function renderOverviewReal(match, eventsJ){
   const homeGoals=goals.filter(g=>g.team===match.home).map(g=>`${g.player} ${g.min}${g.detail.includes("Penalty")?" (P)":""}`);
   const awayGoals=goals.filter(g=>g.team===match.away).map(g=>`${g.player} ${g.min}${g.detail.includes("Penalty")?" (P)":""}`);
 
-  const red=cards.filter(c=>c.detail.includes("Red"));
-  const yel=cards.filter(c=>c.detail.includes("Yellow"));
-  const homeR=red.filter(c=>c.team===match.home).map(c=>`${c.player} ${c.min}`);
-  const awayR=red.filter(c=>c.team===match.away).map(c=>`${c.player} ${c.min}`);
-  const homeY=yel.filter(c=>c.team===match.home).length;
-  const awayY=yel.filter(c=>c.team===match.away).length;
-
   tabOverview.innerHTML=`
     <div class="statsTitle">Overview</div>
 
     <div class="statItem">
       <div class="statLabel">Goles</div>
-      <div class="smallMuted"><b>${match.home}</b>: ${homeGoals.length?homeGoals.join(" · "):"—"}</div>
-      <div class="smallMuted" style="margin-top:6px"><b>${match.away}</b>: ${awayGoals.length?awayGoals.join(" · "):"—"}</div>
+      <div style="color:var(--muted);font-weight:700"><b>${match.home}</b>: ${homeGoals.length?homeGoals.join(" · "):"—"}</div>
+      <div style="color:var(--muted);font-weight:700;margin-top:6px"><b>${match.away}</b>: ${awayGoals.length?awayGoals.join(" · "):"—"}</div>
     </div>
 
     <div class="statItem">
-      <div class="statLabel">Tarjetas</div>
-      <div class="smallMuted"><b>Amarillas</b>: ${match.home} ${homeY} — ${awayY} ${match.away}</div>
-      <div class="smallMuted" style="margin-top:6px"><b>Rojas</b>: ${match.home}: ${homeR.length?homeR.join(", "):"0"} · ${match.away}: ${awayR.length?awayR.join(", "):"0"}</div>
-    </div>
-
-    <div class="statItem">
-      <div class="statLabel">Cambios</div>
-      <div class="smallMuted">${subs.length?subs.slice(0,10).map(s=>`🔁 ${s.team}: ${s.in} ⬅ ${s.out} (${s.min})`).join(" · "):"—"}</div>
+      <div class="statLabel">Eventos</div>
+      <div style="color:var(--muted);font-weight:700">${cards.length?`🟨/🟥 Tarjetas: ${cards.length}`:"Tarjetas: —"}</div>
+      <div style="color:var(--muted);font-weight:700;margin-top:6px">${subs.length?`🔁 Cambios: ${subs.length}`:"Cambios: —"}</div>
     </div>
   `;
 }
@@ -934,11 +968,13 @@ function renderModalStandingsReal(match, standingsJ){
   }).join("");
   tabStandings.innerHTML=`<div class="statsTitle">Standings</div><div class="playerList">${rows}</div>`;
 }
-function setBarsFromLogos(){
-  // Aproximado y consistente (si quieres lo hacemos por teamId luego)
+
+function setBarsFromGlow(){
+  // Usamos colores consistentes (puedes mapear por equipo después)
   modalTop.style.setProperty("--homeBar","rgba(239,68,68,.90)");
   modalTop.style.setProperty("--awayBar","rgba(96,165,250,.90)");
 }
+
 async function loadMatchDetails(match){
   const fixture=match.fixtureId;
   const [statsJ, eventsJ, standingsJ] = await Promise.all([
@@ -959,7 +995,7 @@ function openMatchModal(match){
 
   modalTop.style.setProperty("--homeLogoUrl", `url("${match.homeLogo}")`);
   modalTop.style.setProperty("--awayLogoUrl", `url("${match.awayLogo}")`);
-  setBarsFromLogos();
+  setBarsFromGlow();
 
   const L = LEAGUES[active];
   modalLeague.innerHTML = `<img src="${L.logo}" alt=""> ${L.name}`;
@@ -993,10 +1029,19 @@ document.querySelectorAll(".tab").forEach(tab=>{
     document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected","false"));
     tab.setAttribute("aria-selected","true");
     active=tab.dataset.league;
+
+    // ✅ glow update
+    setActiveGlow();
+
+    // reset caches and reload
     roundsCache=new Map();
     currentRoundCache=new Map();
     await refresh();
   });
+});
+
+document.querySelectorAll(".tabLogo").forEach(img=>{
+  img.onerror = () => { img.style.display = "none"; };
 });
 
 searchInput.addEventListener("input",(e)=>{
@@ -1019,7 +1064,12 @@ closeModalBtn.addEventListener("click", closeMatchModal);
 modalOverlay.addEventListener("click",(e)=>{ if(e.target===modalOverlay)closeMatchModal(); });
 document.addEventListener("keydown",(e)=>{ if(e.key==="Escape" && modalOverlay.classList.contains("show"))closeMatchModal(); });
 
-/* Start */
+/* Init */
+setActiveGlow();
+elActiveLogo.src = LEAGUES[active].logo;
+elActive.textContent = LEAGUES[active].name;
+
+/* Refresh */
 refresh();
 </script>
 </body>
