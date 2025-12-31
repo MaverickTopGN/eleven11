@@ -1,62 +1,60 @@
+const API_HOST = "https://v3.football.api-sports.io";
+
 exports.handler = async (event) => {
   try {
-    // ===== Params desde el frontend =====
-    const league = event.queryStringParameters?.league || "39"; // EPL default
-    const season = event.queryStringParameters?.season || "2024";
-    const mode = event.queryStringParameters?.mode || "live";   // live | today | date
-    const date = event.queryStringParameters?.date;             // YYYY-MM-DD (opcional)
+    const q = event.queryStringParameters || {};
+    const endpoint = String(q.endpoint || "fixtures").toLowerCase();
 
-    // ===== Construcción del endpoint =====
-    const apiUrl = new URL("https://v3.football.api-sports.io/fixtures");
-    apiUrl.searchParams.set("league", league);
-    apiUrl.searchParams.set("season", season);
+    // ✅ rutas correctas API-Football
+    const routes = {
+      fixtures: "/fixtures",
+      rounds: "/fixtures/rounds",
+      events: "/fixtures/events",
+      statistics: "/fixtures/statistics",
+      standings: "/standings",
+      leagues: "/leagues",
+      teams: "/teams",
+    };
 
-    if (mode === "live") {
-      apiUrl.searchParams.set("live", "all");
-    }
-
-    if (mode === "date" && date) {
-      apiUrl.searchParams.set("date", date);
-    }
-
-    // ===== Request a API-Football =====
-    const response = await fetch(apiUrl.toString(), {
-      method: "GET",
-      headers: {
-        "x-apisports-key": process.env.APISPORTS_KEY
-      }
-    });
-
-    if (!response.ok) {
+    const path = routes[endpoint];
+    if (!path) {
       return {
-        statusCode: response.status,
-        body: JSON.stringify({
-          error: "Error from API-Football",
-          status: response.status
-        })
+        statusCode: 400,
+        body: JSON.stringify({ error: `Unknown endpoint: ${endpoint}` }),
       };
     }
 
-    const data = await response.json();
+    const url = new URL(`${API_HOST}${path}`);
 
-    // ===== Respuesta =====
-    return {
-      statusCode: 200,
+    // ✅ pasa TODOS los params excepto endpoint
+    for (const [k, v] of Object.entries(q)) {
+      if (k === "endpoint") continue;
+      if (v === undefined || v === null || v === "") continue;
+      url.searchParams.set(k, String(v));
+    }
+
+    // ❌ IMPORTANTÍSIMO:
+    // NO FORZAR live=all aquí. Solo si el request lo trae explícito.
+    // (ya lo pasamos arriba si existía)
+
+    const res = await fetch(url.toString(), {
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        "Cache-Control": "public, max-age=15"
+        "x-apisports-key": process.env.APISPORTS_KEY,
       },
-      body: JSON.stringify(data)
-    };
+    });
 
-  } catch (error) {
+    const data = await res.json();
+
     return {
-      statusCode: 500,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        error: "Internal server error",
-        message: String(error)
-      })
+      statusCode: res.status,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(data),
     };
+  } catch (e) {
+    return { statusCode: 500, body: JSON.stringify({ error: String(e) }) };
   }
 };
+
