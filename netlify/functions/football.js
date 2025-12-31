@@ -20,7 +20,21 @@ exports.handler = async (event) => {
     if (!path) {
       return {
         statusCode: 400,
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
         body: JSON.stringify({ error: `Unknown endpoint: ${endpoint}` }),
+      };
+    }
+
+    // ✅ VALIDAR API KEY
+    const key = process.env.APISPORTS_KEY;
+    if (!key) {
+      return {
+        statusCode: 500,
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+        body: JSON.stringify({
+          error: "Missing APISPORTS_KEY in Netlify Environment Variables",
+          hint: "Netlify → Project configuration → Environment variables → add APISPORTS_KEY (secret) and redeploy.",
+        }),
       };
     }
 
@@ -33,28 +47,46 @@ exports.handler = async (event) => {
       url.searchParams.set(k, String(v));
     }
 
-    // ❌ IMPORTANTÍSIMO:
-    // NO FORZAR live=all aquí. Solo si el request lo trae explícito.
-    // (ya lo pasamos arriba si existía)
-
     const res = await fetch(url.toString(), {
       headers: {
-        "x-apisports-key": process.env.APISPORTS_KEY,
+        "x-apisports-key": key,
       },
     });
 
-    const data = await res.json();
+    const raw = await res.text(); // 👈 texto primero
 
+    // intenta JSON
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      return {
+        statusCode: 502,
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+        body: JSON.stringify({
+          error: "API-Football returned non-JSON",
+          status: res.status,
+          preview: raw.slice(0, 300),
+          url: url.toString(),
+        }),
+      };
+    }
+
+    // si API-Football regresa ok HTTP pero trae "errors", igual lo devolvemos
     return {
       statusCode: res.status,
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-store",
       },
       body: JSON.stringify(data),
     };
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: String(e) }) };
+    return {
+      statusCode: 500,
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify({ error: String(e) }),
+    };
   }
 };
-
