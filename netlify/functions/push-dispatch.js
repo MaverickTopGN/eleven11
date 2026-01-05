@@ -1,5 +1,8 @@
 const { createClient } = require("@supabase/supabase-js");
 
+// =======================
+// CONFIG
+// =======================
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -8,28 +11,42 @@ const supabase = createClient(
 const API_HOST = "https://v3.football.api-sports.io";
 const API_KEY = process.env.APISPORTS_KEY;
 
-// ✅ Ligas a monitorear (edita a tu gusto)
-const LEAGUES = [39, 140, 61, 2, 262, 48, 143];
+// Ligas a monitorear
+const LEAGUES = [
+  39,   // Premier League
+  140,  // LaLiga
+  61,   // Ligue 1
+  2,    // Champions League
+  262,  // Liga MX
+  48,   // EFL Cup
+  143,  // Copa del Rey
+];
 
-// ✅ temporada actual (año de inicio)
+// Temporada actual (año de inicio)
 const CURRENT_SEASON = 2025;
 
-// ✅ corre cada minuto
+// Ejecuta cada minuto
 exports.config = { schedule: "*/1 * * * *" };
 
+// =======================
+// HELPERS
+// =======================
 function safeStr(x) {
   return (x ?? "").toString();
 }
+
 function mm(e) {
   const el = e?.time?.elapsed;
   const ex = e?.time?.extra;
   if (el == null) return "";
   return ex != null ? `${el}+${ex}'` : `${el}'`;
 }
+
 function isRedCard(detail) {
   const d = safeStr(detail).toLowerCase();
   return d.includes("red") || d.includes("second yellow");
 }
+
 function hashEvent(e) {
   return [
     safeStr(e?.type),
@@ -42,6 +59,22 @@ function hashEvent(e) {
   ].join("|");
 }
 
+function normName(s) {
+  return (s || "").toString().trim().toLowerCase();
+}
+
+function matchHasFavorite(home, away, favorites) {
+  const h = normName(home);
+  const a = normName(away);
+  const favs = (favorites || []).map(normName).filter(Boolean);
+
+  if (!favs.length) return true; // si no hay favoritos, se notifica normal
+  return favs.some((f) => f === h || f === a);
+}
+
+// =======================
+// API FOOTBALL
+// =======================
 async function apiFootball(path, params) {
   const url = new URL(`${API_HOST}${path}`);
   Object.entries(params || {}).forEach(([k, v]) => {
@@ -60,16 +93,28 @@ async function apiFootball(path, params) {
   } catch {
     throw new Error(`API-Football non-JSON ${res.status}: ${text.slice(0, 200)}`);
   }
-  if (!res.ok) throw new Error(`API-Football HTTP ${res.status}: ${JSON.stringify(json).slice(0, 200)}`);
+
+  if (!res.ok) {
+    throw new Error(`API-Football HTTP ${res.status}: ${JSON.stringify(json).slice(0, 200)}`);
+  }
+
   return json;
 }
 
-async function getSubs() {
+// =======================
+// SUPABASE
+// =======================
+async function getSubscriptions() {
   const { data, error } = await supabase
     .from("push_subscriptions")
     .select("expo_token,prefs");
+
   if (error) throw error;
-  return (data || []).map((r) => ({ token: r.expo_token, prefs: r.prefs || {} }));
+
+  return (data || []).map((r) => ({
+    token: r.expo_token,
+    prefs: r.prefs || {},
+  }));
 }
 
 async function getCursor(fixtureId) {
@@ -78,6 +123,7 @@ async function getCursor(fixtureId) {
     .select("last_event_hash")
     .eq("fixture_id", fixtureId)
     .maybeSingle();
+
   if (error) throw error;
   return data?.last_event_hash || null;
 }
@@ -85,12 +131,18 @@ async function getCursor(fixtureId) {
 async function setCursor(fixtureId, hash) {
   const { error } = await supabase
     .from("fixture_notif_cursor")
-    .upsert({ fixture_id: fixtureId, last_event_hash: hash }, { onConflict: "fixture_id" });
+    .upsert(
+      { fixture_id: fixtureId, last_event_hash: hash },
+      { onConflict: "fixture_id" }
+    );
+
   if (error) throw error;
 }
 
-function allow(prefs, kind) {
-  // prefs: {goals,cards,ht,ft}
+// =======================
+// PREFS
+// =======================
+function allowByPrefs(prefs, kind) {
   if (kind === "GOAL" && prefs.goals === false) return false;
   if (kind === "CARD" && prefs.cards === false) return false;
   if (kind === "HT" && prefs.ht === false) return false;
@@ -98,10 +150,14 @@ function allow(prefs, kind) {
   return true;
 }
 
+// =======================
+// EXPO PUSH
+// =======================
 async function sendExpo(messages) {
-  // batch de 100
   const chunks = [];
-  for (let i = 0; i < messages.length; i += 100) chunks.push(messages.slice(i, i + 100));
+  for (let i = 0; i < messages.length; i += 100) {
+    chunks.push(messages.slice(i, i + 100));
+  }
 
   const results = [];
   for (const chunk of chunks) {
@@ -115,18 +171,21 @@ async function sendExpo(messages) {
   return results;
 }
 
+// =======================
+// MAIN
+// =======================
 exports.handler = async () => {
   try {
     if (!API_KEY) {
       return { statusCode: 500, body: JSON.stringify({ error: "Missing APISPORTS_KEY" }) };
     }
 
-    const subs = await getSubs();
+    const subs = await getSubscriptions();
     if (!subs.length) {
       return { statusCode: 200, body: JSON.stringify({ ok: true, sent: 0, reason: "no subs" }) };
     }
 
-    // 1) traer fixtures LIVE por liga
+    // 1) Traer partidos LIVE
     const liveFixtures = [];
     for (const league of LEAGUES) {
       const j = await apiFootball("/fixtures", {
@@ -140,25 +199,31 @@ exports.handler = async () => {
 
     const messages = [];
 
-    // 2) procesar cada fixture LIVE
+    // 2) Procesar cada partido
     for (const fx of liveFixtures) {
       const fixtureId = fx?.fixture?.id;
       if (!fixtureId) continue;
 
-      const statusShort = safeStr(fx?.fixture?.status?.short); // 1H/2H/HT/FT/etc
+      const statusShort = safeStr(fx?.fixture?.status?.short); // 1H/2H/HT/FT
       const home = safeStr(fx?.teams?.home?.name);
       const away = safeStr(fx?.teams?.away?.name);
       const score = `${fx?.goals?.home ?? "-"}-${fx?.goals?.away ?? "-"}`;
 
-      // 2A) HT / FT como “eventos” sintéticos usando cursor
+      // ---- HT / FT ----
       if (statusShort === "HT" || statusShort === "FT") {
         const kind = statusShort === "HT" ? "HT" : "FT";
-        const htHash = `${kind}|${fixtureId}|${score}`;
+        const hash = `${kind}|${fixtureId}|${score}`;
         const last = await getCursor(fixtureId);
 
-        if (last !== htHash) {
+        if (last !== hash) {
           for (const s of subs) {
-            if (!allow(s.prefs, kind)) continue;
+            const prefs = s.prefs || {};
+            const favorites = prefs.favorites || [];
+            const favoritesOnly = prefs.favoritesOnly !== false;
+
+            if (favoritesOnly && !matchHasFavorite(home, away, favorites)) continue;
+            if (!allowByPrefs(prefs, kind)) continue;
+
             messages.push({
               to: s.token,
               sound: "default",
@@ -167,17 +232,16 @@ exports.handler = async () => {
               data: { kind, fixtureId },
             });
           }
-          await setCursor(fixtureId, htHash);
+          await setCursor(fixtureId, hash);
         }
         continue;
       }
 
-      // 2B) Eventos reales (goles / tarjetas) desde /fixtures/events
+      // ---- GOALS / CARDS ----
       const ev = await apiFootball("/fixtures/events", { fixture: fixtureId });
       const list = ev?.response || [];
       if (!list.length) continue;
 
-      // tomamos el último evento relevante
       const relevant = list.filter((e) => {
         const t = safeStr(e?.type).toLowerCase();
         return t === "goal" || t === "card";
@@ -188,8 +252,7 @@ exports.handler = async () => {
       const lastEvent = relevant[relevant.length - 1];
       const h = hashEvent(lastEvent);
       const lastHash = await getCursor(fixtureId);
-
-      if (lastHash === h) continue; // ya lo mandamos
+      if (lastHash === h) continue;
 
       const t = safeStr(lastEvent?.type).toLowerCase();
       const team = safeStr(lastEvent?.team?.name);
@@ -212,7 +275,13 @@ exports.handler = async () => {
       }
 
       for (const s of subs) {
-        if (!allow(s.prefs, kind)) continue;
+        const prefs = s.prefs || {};
+        const favorites = prefs.favorites || [];
+        const favoritesOnly = prefs.favoritesOnly !== false;
+
+        if (favoritesOnly && !matchHasFavorite(home, away, favorites)) continue;
+        if (!allowByPrefs(prefs, kind)) continue;
+
         messages.push({
           to: s.token,
           sound: "default",
