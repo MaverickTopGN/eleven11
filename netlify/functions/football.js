@@ -11,6 +11,7 @@ exports.handler = async (event) => {
       rounds: "/fixtures/rounds",
       events: "/fixtures/events",
       statistics: "/fixtures/statistics",
+      lineups: "/fixtures/lineups",
       standings: "/standings",
       leagues: "/leagues",
       teams: "/teams",
