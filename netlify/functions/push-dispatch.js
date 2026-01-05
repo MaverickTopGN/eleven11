@@ -1,8 +1,5 @@
 const { createClient } = require("@supabase/supabase-js");
 
-// =======================
-// CONFIG
-// =======================
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -12,41 +9,28 @@ const API_HOST = "https://v3.football.api-sports.io";
 const API_KEY = process.env.APISPORTS_KEY;
 
 // Ligas a monitorear
-const LEAGUES = [
-  39,   // Premier League
-  140,  // LaLiga
-  61,   // Ligue 1
-  2,    // Champions League
-  262,  // Liga MX
-  48,   // EFL Cup
-  143,  // Copa del Rey
-];
+const LEAGUES = [39, 140, 61, 2, 262, 48, 143];
 
 // Temporada actual (año de inicio)
 const CURRENT_SEASON = 2025;
 
-// Ejecuta cada minuto
+// CRON cada minuto
 exports.config = { schedule: "*/1 * * * *" };
 
-// =======================
-// HELPERS
-// =======================
+// ---------- Helpers ----------
 function safeStr(x) {
   return (x ?? "").toString();
 }
-
 function mm(e) {
   const el = e?.time?.elapsed;
   const ex = e?.time?.extra;
   if (el == null) return "";
   return ex != null ? `${el}+${ex}'` : `${el}'`;
 }
-
 function isRedCard(detail) {
   const d = safeStr(detail).toLowerCase();
   return d.includes("red") || d.includes("second yellow");
 }
-
 function hashEvent(e) {
   return [
     safeStr(e?.type),
@@ -59,22 +43,21 @@ function hashEvent(e) {
   ].join("|");
 }
 
-function normName(s) {
-  return (s || "").toString().trim().toLowerCase();
+function toInt(x) {
+  const n = Number(x);
+  return Number.isFinite(n) ? n : null;
 }
 
-function matchHasFavorite(home, away, favorites) {
-  const h = normName(home);
-  const a = normName(away);
-  const favs = (favorites || []).map(normName).filter(Boolean);
+function matchHasFavoriteIds(homeId, awayId, favoriteTeamIds) {
+  const favs = Array.isArray(favoriteTeamIds)
+    ? favoriteTeamIds.map(toInt).filter((n) => n != null)
+    : [];
 
   if (!favs.length) return true; // si no hay favoritos, se notifica normal
-  return favs.some((f) => f === h || f === a);
+  return favs.includes(homeId) || favs.includes(awayId);
 }
 
-// =======================
-// API FOOTBALL
-// =======================
+// ---------- API-Football ----------
 async function apiFootball(path, params) {
   const url = new URL(`${API_HOST}${path}`);
   Object.entries(params || {}).forEach(([k, v]) => {
@@ -97,13 +80,10 @@ async function apiFootball(path, params) {
   if (!res.ok) {
     throw new Error(`API-Football HTTP ${res.status}: ${JSON.stringify(json).slice(0, 200)}`);
   }
-
   return json;
 }
 
-// =======================
-// SUPABASE
-// =======================
+// ---------- Supabase ----------
 async function getSubscriptions() {
   const { data, error } = await supabase
     .from("push_subscriptions")
@@ -131,17 +111,12 @@ async function getCursor(fixtureId) {
 async function setCursor(fixtureId, hash) {
   const { error } = await supabase
     .from("fixture_notif_cursor")
-    .upsert(
-      { fixture_id: fixtureId, last_event_hash: hash },
-      { onConflict: "fixture_id" }
-    );
+    .upsert({ fixture_id: fixtureId, last_event_hash: hash }, { onConflict: "fixture_id" });
 
   if (error) throw error;
 }
 
-// =======================
-// PREFS
-// =======================
+// ---------- Prefs ----------
 function allowByPrefs(prefs, kind) {
   if (kind === "GOAL" && prefs.goals === false) return false;
   if (kind === "CARD" && prefs.cards === false) return false;
@@ -150,9 +125,7 @@ function allowByPrefs(prefs, kind) {
   return true;
 }
 
-// =======================
-// EXPO PUSH
-// =======================
+// ---------- Expo Push ----------
 async function sendExpo(messages) {
   const chunks = [];
   for (let i = 0; i < messages.length; i += 100) {
@@ -171,9 +144,7 @@ async function sendExpo(messages) {
   return results;
 }
 
-// =======================
-// MAIN
-// =======================
+// ---------- MAIN ----------
 exports.handler = async () => {
   try {
     if (!API_KEY) {
@@ -185,7 +156,7 @@ exports.handler = async () => {
       return { statusCode: 200, body: JSON.stringify({ ok: true, sent: 0, reason: "no subs" }) };
     }
 
-    // 1) Traer partidos LIVE
+    // 1) Traer fixtures LIVE por liga
     const liveFixtures = [];
     for (const league of LEAGUES) {
       const j = await apiFootball("/fixtures", {
@@ -199,7 +170,7 @@ exports.handler = async () => {
 
     const messages = [];
 
-    // 2) Procesar cada partido
+    // 2) Procesar cada fixture
     for (const fx of liveFixtures) {
       const fixtureId = fx?.fixture?.id;
       if (!fixtureId) continue;
@@ -208,6 +179,10 @@ exports.handler = async () => {
       const home = safeStr(fx?.teams?.home?.name);
       const away = safeStr(fx?.teams?.away?.name);
       const score = `${fx?.goals?.home ?? "-"}-${fx?.goals?.away ?? "-"}`;
+
+      const homeId = toInt(fx?.teams?.home?.id);
+      const awayId = toInt(fx?.teams?.away?.id);
+      if (homeId == null || awayId == null) continue;
 
       // ---- HT / FT ----
       if (statusShort === "HT" || statusShort === "FT") {
@@ -218,10 +193,10 @@ exports.handler = async () => {
         if (last !== hash) {
           for (const s of subs) {
             const prefs = s.prefs || {};
-            const favorites = prefs.favorites || [];
-            const favoritesOnly = prefs.favoritesOnly !== false;
+            const favoritesOnly = prefs.favoritesOnly !== false; // default true si lo quieres
+            const favIds = prefs.favoriteTeamIds || prefs.favoritesTeamIds || [];
 
-            if (favoritesOnly && !matchHasFavorite(home, away, favorites)) continue;
+            if (favoritesOnly && !matchHasFavoriteIds(homeId, awayId, favIds)) continue;
             if (!allowByPrefs(prefs, kind)) continue;
 
             messages.push({
@@ -229,7 +204,7 @@ exports.handler = async () => {
               sound: "default",
               title: kind === "HT" ? "⏱️ Medio tiempo" : "🏁 Final",
               body: `${home} vs ${away} — ${score}`,
-              data: { kind, fixtureId },
+              data: { kind, fixtureId, homeId, awayId },
             });
           }
           await setCursor(fixtureId, hash);
@@ -246,7 +221,6 @@ exports.handler = async () => {
         const t = safeStr(e?.type).toLowerCase();
         return t === "goal" || t === "card";
       });
-
       if (!relevant.length) continue;
 
       const lastEvent = relevant[relevant.length - 1];
@@ -276,10 +250,10 @@ exports.handler = async () => {
 
       for (const s of subs) {
         const prefs = s.prefs || {};
-        const favorites = prefs.favorites || [];
         const favoritesOnly = prefs.favoritesOnly !== false;
+        const favIds = prefs.favoriteTeamIds || prefs.favoritesTeamIds || [];
 
-        if (favoritesOnly && !matchHasFavorite(home, away, favorites)) continue;
+        if (favoritesOnly && !matchHasFavoriteIds(homeId, awayId, favIds)) continue;
         if (!allowByPrefs(prefs, kind)) continue;
 
         messages.push({
@@ -287,7 +261,7 @@ exports.handler = async () => {
           sound: "default",
           title,
           body,
-          data: { kind, fixtureId },
+          data: { kind, fixtureId, homeId, awayId },
         });
       }
 
